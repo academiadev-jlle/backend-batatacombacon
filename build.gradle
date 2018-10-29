@@ -29,8 +29,12 @@ repositories {
 
 
 dependencies {
+  runtimeOnly('com.h2database:h2')
 	implementation('org.springframework.boot:spring-boot-starter-actuator')
 	implementation('org.springframework.boot:spring-boot-starter-web')
-	testImplementation('org.springframework.boot:spring-boot-starter-test')
 	implementation('org.springframework.boot:spring-boot-starter-data-jpa')
+  testImplementation('org.springframework.boot:spring-boot-starter-test')
+	compile group: 'javax.xml', name: 'jaxb-api', version: '2.1'
+  compile group: 'io.springfox', name: 'springfox-swagger2', version: '2.9.2'
+	compile group: 'io.springfox', name: 'springfox-swagger-ui', version: '2.9.2'
 }
