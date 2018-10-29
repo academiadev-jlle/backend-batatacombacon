@@ -34,6 +34,6 @@ dependencies {
 	testImplementation('org.springframework.boot:spring-boot-starter-test')
 	runtimeOnly('com.h2database:h2')
 	compile group: 'javax.xml', name: 'jaxb-api', version: '2.1'
-    compile group: 'io.springfox', name: 'springfox-swagger2', version: '2.9.2'
+    	compile group: 'io.springfox', name: 'springfox-swagger2', version: '2.9.2'
 	compile group: 'io.springfox', name: 'springfox-swagger-ui', version: '2.9.2'
 }
