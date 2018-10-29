@@ -1,4 +1,4 @@
-package model;
+package br.com.academiadev.BatataComBaconSpring.model;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -12,12 +12,11 @@ public class User {
 	@GeneratedValue
 	private Long id;
 	@NotNull(message = "Usuário precisa de um nome válido")
-	@Size(min=3,max=120)
+	@Size(min = 3, max = 120)
 	private String name;
 	private String email;
 	private String password;
 
-	
 	public Long getId() {
 		return id;
 	}
