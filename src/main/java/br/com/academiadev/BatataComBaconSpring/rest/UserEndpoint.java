@@ -29,28 +29,28 @@ public class UserEndpoint {
 	@ApiOperation(value = "Cria um usuario")
 	@ApiResponses(value = { @ApiResponse(code = 201, message = "Usuario criado com sucesso") })
 	@PostMapping
-	public void newUser(@RequestBody User user) {
+	public void novoUsuario(@RequestBody User user) {
 		userRepository.save(user);
 	}
 
 	@ApiOperation(value = "Retorna a lista de usuarios")
 	@ApiResponses(value = { @ApiResponse(code = 201, message = "Lista retornada com sucesso") })
 	@GetMapping
-	public List<User> listUsers() {
+	public List<User> listarUsuario() {
 		return userRepository.findAll();
 	}
 	
 	@ApiOperation(value = "Retorna um usuário")
 	@ApiResponses(value = {@ApiResponse(code = 201, message = "Usuário encontrado com sucesso")})
 	@GetMapping("/{id}")
-	public User findUserId(@PathVariable Long id) {
+	public User encontrarUsuarioId(@PathVariable Long id) {
 		return userRepository.findById(id).orElse(null);
 	}
 	
 	@ApiOperation(value = "Deletar um usuário")
 	@ApiResponses(value = { @ApiResponse(code = 201, message = "Usuário deletado com sucesso") })
 	@DeleteMapping("/{id}")
-	public void deleteUserById(@PathVariable Long id) {
+	public void deletarUsuarioID(@PathVariable Long id) {
 		userRepository.deleteById(id);
 	}
 

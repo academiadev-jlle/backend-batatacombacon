@@ -14,13 +14,13 @@ public class User {
 	private Long id;
 	@NotNull(message = "Usuário precisa de um nome válido")
 	@Size(min = 3, max = 120)
-	private String name;
+	private String nome;
 	@NotNull
 	@Email
 	private String email;
 	@NotNull
 	@Size(min = 6, max = 30)
-	private String password;
+	private String senha;
 
 	public Long getId() {
 		return id;
@@ -31,11 +31,11 @@ public class User {
 	}
 
 	public String getName() {
-		return name;
+		return nome;
 	}
 
 	public void setName(String name) {
-		this.name = name;
+		this.nome = name;
 	}
 
 	public String getEmail() {
@@ -47,11 +47,11 @@ public class User {
 	}
 
 	public String getPassword() {
-		return password;
+		return senha;
 	}
 
 	public void setPassword(String password) {
-		this.password = password;
+		this.senha = password;
 	}
 
 }
