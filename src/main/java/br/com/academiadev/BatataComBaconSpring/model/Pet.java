@@ -8,27 +8,60 @@ import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-//import javax.persistence.ManyToOne;
+import javax.persistence.ManyToOne;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+import org.springframework.lang.Nullable;
+
+import br.com.academiadev.BatataComBaconSpring.enums.Objetivo;
+import br.com.academiadev.BatataComBaconSpring.enums.Especie;
+import io.swagger.annotations.ApiModelProperty;
+
 @Entity
 public class Pet {
+
 	@Id
 	@GeneratedValue
+	@ApiModelProperty(example = "1", name = "Identificador do Pet")
 	private Long id;
-//	@ManyToOne(optional = false)
+
 	@NotNull
-	private Long idUsuario;
-	@NotNull
+	@ManyToOne
+	@ApiModelProperty(name = "Usuário Criador")
+	private User usuario;
+
+	@NotBlank
 	@Size(min = 3, max = 30)
+	@ApiModelProperty(example = "Rex", name = "Nome do Pet")
 	private String nome;
+	
+	@NotNull
+	@ApiModelProperty(example = "True", name = "Sexo do pet")
+	private Boolean macho;
+
+	@NotNull
 	@Enumerated(EnumType.STRING)
-	private Raca raca;
+	@ApiModelProperty(example = "FELINO", name = "Espécie do Pet")
+	private Especie especie;
+
+	@NotNull
 	@Enumerated(EnumType.STRING)
+	@ApiModelProperty(example = "DOACAO", name = "Objetivo do cadastro deste Pet")
 	private Objetivo objetivo;
+	
+	@NotBlank
+	@ApiModelProperty(example = "Morro da vó Salvelina", name = "Local onde o Pet foi encontrado / perdido / acolhido")
+	private String localPet;
+
+	@NotNull
+	@ApiModelProperty(example = "2018-12-31", name = "Data de cadastro do Pet")
 	private LocalDate dataCriacao;
-	private LocalDate dataEncontrado;
+
+	@Nullable
+	@ApiModelProperty(example = "2018-12-31", name = "Data em que o pet nasceu / foi perdido / foi encontrado")
+	private LocalDate dataPet;
 
 	public Long getId() {
 		return id;
@@ -38,12 +71,12 @@ public class Pet {
 		this.id = id;
 	}
 
-	public Long getIdUsuario() {
-		return idUsuario;
+	public User getUsuario() {
+		return usuario;
 	}
 
-	public void setIdUsuario(Long idUsuario) {
-		this.idUsuario = idUsuario;
+	public void setUsuario(User usuario) {
+		this.usuario = usuario;
 	}
 
 	public String getNome() {
@@ -54,12 +87,20 @@ public class Pet {
 		this.nome = nome;
 	}
 
-	public Raca getRaca() {
-		return raca;
+	public Boolean getMacho() {
+		return macho;
 	}
 
-	public void setRaca(Raca raca) {
-		this.raca = raca;
+	public void setMacho(Boolean macho) {
+		this.macho = macho;
+	}
+
+	public Especie getEspecie() {
+		return especie;
+	}
+
+	public void setEspecie(Especie especie) {
+		this.especie = especie;
 	}
 
 	public Objetivo getObjetivo() {
@@ -70,6 +111,14 @@ public class Pet {
 		this.objetivo = objetivo;
 	}
 
+	public String getLocalPet() {
+		return localPet;
+	}
+
+	public void setLocalPet(String localPet) {
+		this.localPet = localPet;
+	}
+
 	public LocalDate getDataCriacao() {
 		return dataCriacao;
 	}
@@ -78,11 +127,12 @@ public class Pet {
 		this.dataCriacao = dataCriacao;
 	}
 
-	public Optional<LocalDate> getDataEncontrado() {
-		return Optional.ofNullable(dataEncontrado);
+	public Optional<LocalDate> getDataPet() {
+		return Optional.ofNullable(dataPet);
 	}
 
-	public void setDataEncontrado(LocalDate dataEncontrado) {
-		this.dataEncontrado = dataEncontrado;
+	public void setDataPet(LocalDate dataPet) {
+		this.dataPet = dataPet;
 	}
+
 }
