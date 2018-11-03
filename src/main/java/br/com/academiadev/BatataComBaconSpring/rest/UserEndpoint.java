@@ -41,7 +41,7 @@ public class UserEndpoint {
 	}
 	
 	@ApiOperation(value = "Retorna um usuário")
-	@ApiResponses(value = {@ApiResponse(code = 2001, message = "Usuário encontrado com sucesso")})
+	@ApiResponses(value = {@ApiResponse(code = 201, message = "Usuário encontrado com sucesso")})
 	@GetMapping("/{id}")
 	public User findUserId(@PathVariable Long id) {
 		return userRepository.findById(id).orElse(null);
