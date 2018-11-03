@@ -1,5 +1,7 @@
 package br.com.academiadev.BatataComBaconSpring.rest;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,7 +20,7 @@ import io.swagger.annotations.ApiResponses;
 
 @RestController
 @RequestMapping(value = "/pet")
-@Api
+@Api("Serviços de Pet")
 public class PetEndpoint {
 
 	@Autowired
@@ -34,8 +36,8 @@ public class PetEndpoint {
 	@ApiOperation(value = "Retorna a lista de Pets")
 	@ApiResponses(value = { @ApiResponse(code = 201, message = "Lista retornada com sucesso!") })
 	@GetMapping
-	public void listaPet(@RequestBody Pet pet) {
-		petRepository.findAll();
+	public List<Pet> listaPet() {
+		return petRepository.findAll();
 	}
 
 	@ApiOperation(value = "Retorna um pet")
