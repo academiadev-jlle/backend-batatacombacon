@@ -2,7 +2,7 @@ package br.com.academiadev.BatataComBaconSpring.enums;
 
 public enum Objetivo {
 
-	PROCURADO("Procurado"), ENCONTRADO("Encontrado"), DOACAO("Doação"), NENHUM("Nenhum");
+	PERDIDO("Perdido"), ENCONTRADO("Encontrado"), DOACAO("Doação");
 
 	private String descricao;
 
