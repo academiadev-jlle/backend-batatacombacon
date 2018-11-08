@@ -9,7 +9,6 @@ import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -65,11 +64,10 @@ public class Pet {
 	private String localPet;
 	
 	@NotNull
-	@ManyToOne
 	@ApiModelProperty(hidden = true)
-	@CreatedBy
 	@Column(name = "created_by", updatable = false)
-	private User usuario;
+	@CreatedBy
+	private Long idUsuario;
 
 	@NotNull
 	@ApiModelProperty(hidden = true)
