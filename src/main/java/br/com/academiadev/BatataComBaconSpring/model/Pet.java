@@ -37,7 +37,7 @@ public class Pet {
 
 	@Id
 	@GeneratedValue
-	@ApiModelProperty(example = "1", name = "Identificador do Pet")
+	@ApiModelProperty(hidden = true)
 	private Long id;
 
 	@NotBlank
@@ -64,7 +64,7 @@ public class Pet {
 	private String localPet;
 	
 	@NotNull
-	@ApiModelProperty(hidden = true)
+	@ApiModelProperty(example = "1", name = "Identificador do Usuário Criador")
 	@Column(name = "created_by", updatable = false)
 	@CreatedBy
 	private Long idUsuario;

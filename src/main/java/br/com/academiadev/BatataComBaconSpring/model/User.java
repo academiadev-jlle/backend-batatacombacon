@@ -31,7 +31,7 @@ public class User {
 
 	@Id
 	@GeneratedValue
-	@ApiModelProperty(example = "1", name = "Identificador")
+	@ApiModelProperty(hidden = true)
 	private Long id;
 
 	@NotBlank(message = "Usuário precisa de um nome válido")
