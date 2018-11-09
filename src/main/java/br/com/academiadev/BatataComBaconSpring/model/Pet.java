@@ -1,7 +1,6 @@
 package br.com.academiadev.BatataComBaconSpring.model;
 
 import java.time.LocalDate;
-import java.util.Optional;
 
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -18,8 +17,14 @@ import org.springframework.lang.Nullable;
 import br.com.academiadev.BatataComBaconSpring.enums.Objetivo;
 import br.com.academiadev.BatataComBaconSpring.enums.Especie;
 import io.swagger.annotations.ApiModelProperty;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Entity
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class Pet {
 
 	@Id
@@ -62,77 +67,4 @@ public class Pet {
 	@Nullable
 	@ApiModelProperty(example = "2018-12-31", name = "Data em que o pet nasceu / foi perdido / foi encontrado")
 	private LocalDate dataPet;
-
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
-
-	public User getUsuario() {
-		return usuario;
-	}
-
-	public void setUsuario(User usuario) {
-		this.usuario = usuario;
-	}
-
-	public String getNome() {
-		return nome;
-	}
-
-	public void setNome(String nome) {
-		this.nome = nome;
-	}
-
-	public Boolean getMacho() {
-		return macho;
-	}
-
-	public void setMacho(Boolean macho) {
-		this.macho = macho;
-	}
-
-	public Especie getEspecie() {
-		return especie;
-	}
-
-	public void setEspecie(Especie especie) {
-		this.especie = especie;
-	}
-
-	public Objetivo getObjetivo() {
-		return objetivo;
-	}
-
-	public void setObjetivo(Objetivo objetivo) {
-		this.objetivo = objetivo;
-	}
-
-	public String getLocalPet() {
-		return localPet;
-	}
-
-	public void setLocalPet(String localPet) {
-		this.localPet = localPet;
-	}
-
-	public LocalDate getDataCriacao() {
-		return dataCriacao;
-	}
-
-	public void setDataCriacao(LocalDate dataCriacao) {
-		this.dataCriacao = dataCriacao;
-	}
-
-	public Optional<LocalDate> getDataPet() {
-		return Optional.ofNullable(dataPet);
-	}
-
-	public void setDataPet(LocalDate dataPet) {
-		this.dataPet = dataPet;
-	}
-
 }
