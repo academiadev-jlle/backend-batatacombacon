@@ -7,7 +7,14 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 @Entity
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class User {
 	@Id
 	@GeneratedValue
@@ -21,37 +28,4 @@ public class User {
 	@NotNull
 	@Size(min = 6, max = 30)
 	private String senha;
-
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
-
-	public String getName() {
-		return nome;
-	}
-
-	public void setName(String name) {
-		this.nome = name;
-	}
-
-	public String getEmail() {
-		return email;
-	}
-
-	public void setEmail(String email) {
-		this.email = email;
-	}
-
-	public String getPassword() {
-		return senha;
-	}
-
-	public void setPassword(String password) {
-		this.senha = password;
-	}
-
 }
