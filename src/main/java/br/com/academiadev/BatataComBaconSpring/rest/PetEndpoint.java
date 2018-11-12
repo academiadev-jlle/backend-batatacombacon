@@ -3,6 +3,7 @@ package br.com.academiadev.BatataComBaconSpring.rest;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -29,6 +30,7 @@ public class PetEndpoint {
 	@ApiOperation(value = "Cria um Pet")
 	@ApiResponses(value = { @ApiResponse(code = 201, message = "Pet criado com sucesso!") })
 	@PostMapping
+	@CrossOrigin//("https://frontendcombacon.herokuapp.com/")
 	public void criaPet(@RequestBody Pet pet) {
 		petRepository.save(pet);
 	}
@@ -36,6 +38,7 @@ public class PetEndpoint {
 	@ApiOperation(value = "Retorna a lista de Pets")
 	@ApiResponses(value = { @ApiResponse(code = 201, message = "Lista retornada com sucesso!") })
 	@GetMapping
+	@CrossOrigin//("https://frontendcombacon.herokuapp.com/")
 	public List<Pet> listaPet() {
 		return petRepository.findAll();
 	}
@@ -43,6 +46,7 @@ public class PetEndpoint {
 	@ApiOperation(value = "Retorna um pet")
 	@ApiResponses(value = { @ApiResponse(code = 201, message = "Pet encontrado com sucesso") })
 	@GetMapping("/{id}")
+	@CrossOrigin//("https://frontendcombacon.herokuapp.com/")
 	public Pet buscarPor(@PathVariable Long id) {
 		return petRepository.findById(id).orElse(null);
 	}
@@ -50,6 +54,7 @@ public class PetEndpoint {
 	@ApiOperation(value = "Deleta um pet")
 	@ApiResponses(value = { @ApiResponse(code = 201, message = "Pet deletado com sucesso") })
 	@DeleteMapping("/{id}")
+	@CrossOrigin//("https://frontendcombacon.herokuapp.com/")
 	public void deletarPet(@PathVariable Long id) {
 		petRepository.deleteById(id);
 	}
