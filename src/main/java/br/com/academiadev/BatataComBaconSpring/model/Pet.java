@@ -6,7 +6,6 @@ import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotBlank;
@@ -29,8 +28,8 @@ import lombok.NoArgsConstructor;
 public class Pet {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@ApiModelProperty(hidden = true)
+	@GeneratedValue
+	@ApiModelProperty(example = "1", name = "Identificador do Pet")
 	private Long id;
 
 	@NotNull
