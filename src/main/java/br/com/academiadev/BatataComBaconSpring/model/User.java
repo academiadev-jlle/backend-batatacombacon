@@ -17,6 +17,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class User {
+
 	@Id
 	@GeneratedValue
     @ApiModelProperty(example = "1" ,name = "Identificador do usuário")
@@ -33,4 +34,5 @@ public class User {
 	@Size(min = 6, max = 30)
     @ApiModelProperty(example = "minha senha é essa" ,name = "Senha do usuário")
 	private String senha;
+
 }
