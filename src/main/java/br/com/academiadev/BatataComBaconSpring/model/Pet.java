@@ -41,7 +41,7 @@ public class Pet {
 	@Size(min = 3, max = 30)
 	@ApiModelProperty(example = "Rex", name = "Nome do Pet")
 	private String nome;
-	
+
 	@NotNull
 	@ApiModelProperty(example = "True", name = "Sexo do pet")
 	private Boolean macho;
@@ -55,7 +55,7 @@ public class Pet {
 	@Enumerated(EnumType.STRING)
 	@ApiModelProperty(example = "DOACAO", name = "Objetivo do cadastro deste Pet")
 	private Objetivo objetivo;
-	
+
 	@NotBlank
 	@ApiModelProperty(example = "Morro da vó Salvelina", name = "Local onde o Pet foi encontrado / perdido / acolhido")
 	private String localPet;
