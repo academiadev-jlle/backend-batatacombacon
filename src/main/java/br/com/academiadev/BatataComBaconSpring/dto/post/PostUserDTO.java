@@ -14,17 +14,17 @@ public class PostUserDTO {
 	
 	@NotBlank(message = "Usuário precisa de um nome válido")
 	@Size(min = 3, max = 120)
-	@ApiModelProperty(example = "João da Silva", name = "Nome")
+	@ApiModelProperty(example = "José Silva Figueiredo", name = "Nome do usuário")
 	private String nome;
 
 	@NotBlank
 	@Email
-	@ApiModelProperty(example = "exemplo@exemplo.com", name = "Email")
+	@ApiModelProperty(example = "petcodes@petcodes.com.br", name = "E-mail do usuário")
 	private String email;
 
 	@NotBlank
 	@Size(min = 6, max = 30)
-	@ApiModelProperty(example = "SeperSecreto", name = "Senha")
+	@ApiModelProperty(example = "SuperSecreto", name = "Senha do usuário")
 	private String senha;
 
 }
