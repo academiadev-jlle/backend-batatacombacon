@@ -1,6 +1,5 @@
 package br.com.academiadev.BatataComBaconSpring.model;
 
-
 import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
 import javax.validation.constraints.Email;
