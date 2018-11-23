@@ -13,6 +13,6 @@ public class AbstractEntity<ID> {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private ID id;
+	protected ID id;
 
 }
