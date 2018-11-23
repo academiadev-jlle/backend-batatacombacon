@@ -20,6 +20,8 @@ public class PetService {
 	@Autowired
 	private PetRepository repository;
 	
+	@Autowired UserService userService;
+	
 	@Autowired
 	private PetMapper mapper;
 	
@@ -32,6 +34,7 @@ public class PetService {
 	}
 	
 	public List<RequestPetDTO> findAllFromUser(Long idUser){
+		userService.findById(idUser);
 		return mapper.toDTO(repository.findAllByUsuario_id(idUser));
 	}
 	

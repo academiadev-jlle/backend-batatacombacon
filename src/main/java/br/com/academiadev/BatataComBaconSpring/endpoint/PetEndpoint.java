@@ -26,7 +26,7 @@ import io.swagger.annotations.ApiResponses;
 
 @RestController
 @RequestMapping("/")
-@Api("Serviços de Pet")
+@Api("Endpoint de Pet")
 public class PetEndpoint {
 
 	@Autowired
