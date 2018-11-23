@@ -58,4 +58,8 @@ public class User {
 	@Column(name = "updated_at", updatable = true)
 	@ApiModelProperty(hidden = true)
 	private LocalDateTime updatedAt;
+	
+	public User(Long id) {
+		this.id = id;
+	}
 }

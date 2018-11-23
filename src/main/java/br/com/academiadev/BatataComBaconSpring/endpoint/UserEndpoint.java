@@ -1,4 +1,4 @@
-package br.com.academiadev.BatataComBaconSpring.rest;
+package br.com.academiadev.BatataComBaconSpring.endpoint;
 
 import java.util.List;
 
