@@ -1,41 +1,37 @@
 package br.com.academiadev.BatataComBaconSpring.model;
 
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.EntityListeners;
 import javax.validation.constraints.Email;
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
-import io.swagger.annotations.ApiModelProperty;
-import lombok.AllArgsConstructor;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
-@Entity
 @Data
-@AllArgsConstructor
+@EqualsAndHashCode(callSuper = true)
 @NoArgsConstructor
-public class User {
+@Entity
+@EntityListeners(AuditingEntityListener.class)
+public class User extends AuditEntity<Long> {
 
-	@Id
-	@GeneratedValue
-	@ApiModelProperty(example = "1", name = "Identificador do usuário")
-	private Long id;
-
-	@NotNull(message = "Usuário precisa de um nome válido")
+	@NotBlank(message = "Usuário precisa de um nome válido")
 	@Size(min = 3, max = 120)
-	@ApiModelProperty(example = "José Silva Figueiredo", name = "Nome do usuário")
 	private String nome;
 
-	@NotNull
+	@NotBlank
 	@Email
-	@ApiModelProperty(example = "petcodes@petcodes.com.br", name = "E-mail do usuário")
 	private String email;
 
-	@NotNull
+	@NotBlank
 	@Size(min = 6, max = 30)
-	@ApiModelProperty(example = "minha senha é essa", name = "Senha do usuário")
 	private String senha;
 
+	public User(Long id) {
+		this.id = id;
+	}
 }

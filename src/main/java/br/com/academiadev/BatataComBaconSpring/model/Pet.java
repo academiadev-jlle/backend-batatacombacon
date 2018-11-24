@@ -1,70 +1,70 @@
 package br.com.academiadev.BatataComBaconSpring.model;
 
-import java.time.LocalDate;
 
 import javax.persistence.Entity;
+import javax.persistence.EntityListeners;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
-import org.springframework.lang.Nullable;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import br.com.academiadev.BatataComBaconSpring.enums.Objetivo;
+import br.com.academiadev.BatataComBaconSpring.enums.Porte;
+import br.com.academiadev.BatataComBaconSpring.enums.Sexo;
+import br.com.academiadev.BatataComBaconSpring.dto.post.PostPetDTO;
 import br.com.academiadev.BatataComBaconSpring.enums.Especie;
-import io.swagger.annotations.ApiModelProperty;
-import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
-@Entity
 @Data
-@AllArgsConstructor
+@EqualsAndHashCode(callSuper = true)
 @NoArgsConstructor
-public class Pet {
-
-	@Id
-	@GeneratedValue
-	@ApiModelProperty(example = "1", name = "Identificador do Pet")
-	private Long id;
-
-	@NotNull
-	@ManyToOne
-	@ApiModelProperty(name = "Usuário Criador")
-	private User usuario;
+@Entity
+@EntityListeners(AuditingEntityListener.class)
+public class Pet extends AuditEntity<Long> {
 
 	@NotBlank
 	@Size(min = 3, max = 30)
-	@ApiModelProperty(example = "Rex", name = "Nome do Pet")
 	private String nome;
 
 	@NotNull
-	@ApiModelProperty(example = "True", name = "Sexo do pet")
-	private Boolean macho;
+	@Enumerated(EnumType.STRING)
+	private Sexo sexo;
+	
+	@NotNull
+	@Enumerated(EnumType.STRING)
+	private Porte porte;
 
 	@NotNull
 	@Enumerated(EnumType.STRING)
-	@ApiModelProperty(example = "FELINO", name = "Espécie do Pet")
 	private Especie especie;
 
 	@NotNull
 	@Enumerated(EnumType.STRING)
-	@ApiModelProperty(example = "DOACAO", name = "Objetivo do cadastro deste Pet")
 	private Objetivo objetivo;
 
 	@NotBlank
-	@ApiModelProperty(example = "Morro da vó Salvelina", name = "Local onde o Pet foi encontrado / perdido / acolhido")
 	private String localPet;
-
+	
 	@NotNull
-	@ApiModelProperty(example = "2018-12-31", name = "Data de cadastro do Pet")
-	private LocalDate dataCriacao;
+	@ManyToOne
+	private User usuario;
 
-	@Nullable
-	@ApiModelProperty(example = "2018-12-31", name = "Data em que o pet nasceu / foi perdido / foi encontrado")
-	private LocalDate dataPet;
+	public Pet(PostPetDTO dto) {
+		super();
+		this.nome = dto.getNome();
+		this.sexo = dto.getSexo();
+		this.porte = dto.getPorte();
+		this.especie = dto.getEspecie();
+		this.objetivo = dto.getObjetivo();
+		this.localPet = dto.getLocalPet();
+		this.usuario = new User(dto.getIdUsuario());
+	}
+	
+	
 }
