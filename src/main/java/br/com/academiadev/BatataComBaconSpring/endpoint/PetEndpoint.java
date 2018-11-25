@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -64,7 +65,19 @@ public class PetEndpoint {
 		return mapper.toDTO(petService.save(pet));
 
 	}
-
+	
+	@ApiOperation("Altera um Pet")
+	@ApiResponses({ //
+		@ApiResponse(code = 200 , message = "Pet alterado com sucesso"), //
+		@ApiResponse(code = 404, message = "Pet não encontrado") //
+	})
+	@PutMapping("/{idPet}")
+	public Pet alteraPet(PostPetDTO dto, @RequestParam("idPet") Long idPet) {
+		Pet pet = mapper.toPet(dto);
+		pet.setId(idPet);
+		return petService.alteraPet(pet);
+	}
+	
 	@ApiOperation("Retorna a lista de pets, com possibilidade de filtragem")
 	@ApiResponses({ //
 			@ApiResponse(code = 200, message = "Lista retornada com sucesso!") //

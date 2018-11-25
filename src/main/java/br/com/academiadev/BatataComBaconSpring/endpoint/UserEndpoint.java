@@ -12,15 +12,18 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.academiadev.BatataComBaconSpring.config.ExceptionResponse;
 import br.com.academiadev.BatataComBaconSpring.dto.post.PostUserDTO;
 import br.com.academiadev.BatataComBaconSpring.dto.request.RequestUserDTO;
 import br.com.academiadev.BatataComBaconSpring.mapper.UserMapper;
+import br.com.academiadev.BatataComBaconSpring.model.User;
 import br.com.academiadev.BatataComBaconSpring.service.UserService;
 import br.com.academiadev.BatataComBaconSpring.service.Utils;
 import io.swagger.annotations.Api;
@@ -42,6 +45,7 @@ public class UserEndpoint {
 
 	@ApiOperation(value = "Cria um usuario")
 	@ApiResponses(value = { @ApiResponse(code = 201, message = "Usuario criado com sucesso") })
+	@ResponseStatus(code = HttpStatus.CREATED)
 	@PostMapping
 	public RequestUserDTO save(@RequestBody @Valid PostUserDTO dto) {
 		return mapper.toDTO(service.save(mapper.toUser(dto)));
@@ -61,6 +65,19 @@ public class UserEndpoint {
 	@GetMapping("/{idUser}")
 	public RequestUserDTO findById(@PathVariable("idUser") Long idUser) {
 		return mapper.toDTO(service.findById(idUser));
+	}
+
+	@ApiOperation(value = "Altera um usuário")
+	@ApiResponses(value = { //
+			@ApiResponse(code = 200, message = "Usuário alterado com sucesso"),//
+			@ApiResponse(code = 404, message = "Usuário não encontrado")
+	})
+	@PutMapping("/{idUser}")
+	public RequestUserDTO alteraUser(@RequestBody @Valid PostUserDTO dto,
+			@RequestParam("idUser") Long idUser) {
+		User usuario = mapper.toUser(dto);
+		usuario.setId(idUser);
+		return mapper.toDTO(service.alteraUser(usuario));
 	}
 
 	@ApiOperation(value = "Deletar um usuário")

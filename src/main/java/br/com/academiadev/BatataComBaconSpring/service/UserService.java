@@ -18,6 +18,15 @@ public class UserService {
 	public User save(User usuario) {
 		return repository.save(usuario);
 	}
+	
+	public User alteraUser(User userModificado) {
+		User user = repository.findById(userModificado.getId()).orElseThrow(() -> new UserNaoEncontradoException("Usuário não encontrado"));
+		user.setNome(userModificado.getNome());
+		user.setEmail(userModificado.getEmail());
+		user.setSenha(userModificado.getSenha());
+		repository.flush();
+		return user;
+	}
 
 	public Page<User> findAll(Pageable pageable) {
 		return repository.findAll(pageable);

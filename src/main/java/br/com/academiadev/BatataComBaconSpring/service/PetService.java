@@ -23,6 +23,18 @@ public class PetService {
 		return repository.save(pet);
 	}
 	
+	public Pet alteraPet(Pet petModificado) {
+		Pet pet = repository.findById(petModificado.getId()).orElseThrow(() -> new PetNaoEncontradoException("Pet não encontrado"));
+		pet.setNome(petModificado.getNome());
+		pet.setEspecie(petModificado.getEspecie());
+		pet.setLocalPet(petModificado.getLocalPet());
+		pet.setObjetivo(petModificado.getObjetivo());
+		pet.setPorte(petModificado.getPorte());
+		pet.setSexo(petModificado.getSexo());
+		repository.flush();
+		return pet;
+	}
+	
 	public Page<Pet> findAll(Pet pet,Pageable pageable){
 		return repository.findAll(Example.of(pet), pageable);
 	}
