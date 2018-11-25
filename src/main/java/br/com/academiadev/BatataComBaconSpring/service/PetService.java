@@ -23,8 +23,8 @@ public class PetService {
 		return repository.save(pet);
 	}
 	
-	public Page<Pet> findAll(Pageable pageable){
-		return repository.findAll(pageable);
+	public Page<Pet> findAll(Pet pet,Pageable pageable){
+		return repository.findAll(Example.of(pet), pageable);
 	}
 	
 	public Page<Pet> findAllFromUser(Long idUser, Pageable pageable){

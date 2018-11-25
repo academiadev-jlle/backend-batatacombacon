@@ -21,6 +21,10 @@ import org.springframework.web.bind.annotation.RestController;
 import br.com.academiadev.BatataComBaconSpring.config.ExceptionResponse;
 import br.com.academiadev.BatataComBaconSpring.dto.post.PostPetDTO;
 import br.com.academiadev.BatataComBaconSpring.dto.request.RequestPetDTO;
+import br.com.academiadev.BatataComBaconSpring.enums.Especie;
+import br.com.academiadev.BatataComBaconSpring.enums.Objetivo;
+import br.com.academiadev.BatataComBaconSpring.enums.Porte;
+import br.com.academiadev.BatataComBaconSpring.enums.Sexo;
 import br.com.academiadev.BatataComBaconSpring.mapper.PetMapper;
 import br.com.academiadev.BatataComBaconSpring.model.Pet;
 import br.com.academiadev.BatataComBaconSpring.model.User;
@@ -61,15 +65,22 @@ public class PetEndpoint {
 
 	}
 
-	@ApiOperation("Retorna a lista completa de Pets")
+	@ApiOperation("Retorna a lista de pets, com possibilidade de filtragem")
 	@ApiResponses({ //
 			@ApiResponse(code = 200, message = "Lista retornada com sucesso!") //
 	})
 	@GetMapping("pet")
-	public Page<RequestPetDTO> listaPets(@RequestParam(required = false, defaultValue = "0") Integer page,
-			@RequestParam(required = false, defaultValue = "20") Integer size) {
+	public Page<RequestPetDTO> listaPets(//
+			@RequestParam(required = false, defaultValue = "0") Integer page, //
+			@RequestParam(required = false, defaultValue = "20") Integer size, //
+			@RequestParam(required = false) Especie especie, //
+			@RequestParam(required = false) Porte porte, //
+			@RequestParam(required = false) Objetivo objetivo, //
+			@RequestParam(required = false) Sexo sexo //
+	) {
 		Pageable pageable = PageRequest.of(page, size);
-		return Utils.toPageDTO(petService.findAll(pageable), mapper::toDTO);
+		Pet pet = Pet.builder().especie(especie).porte(porte).objetivo(objetivo).sexo(sexo).build();
+		return Utils.toPageDTO(petService.findAll(pet, pageable), mapper::toDTO);
 	}
 
 	@ApiOperation("Retorna a lista de Pets de um Usuário")

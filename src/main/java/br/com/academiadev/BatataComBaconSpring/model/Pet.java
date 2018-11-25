@@ -16,6 +16,8 @@ import br.com.academiadev.BatataComBaconSpring.enums.Objetivo;
 import br.com.academiadev.BatataComBaconSpring.enums.Porte;
 import br.com.academiadev.BatataComBaconSpring.enums.Sexo;
 import br.com.academiadev.BatataComBaconSpring.enums.Especie;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -23,6 +25,8 @@ import lombok.NoArgsConstructor;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @NoArgsConstructor
+@AllArgsConstructor
+@Builder
 @Entity
 @EntityListeners(AuditingEntityListener.class)
 public class Pet extends AuditEntity<Long> {
