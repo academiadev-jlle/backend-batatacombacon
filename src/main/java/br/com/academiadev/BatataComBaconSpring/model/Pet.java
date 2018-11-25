@@ -15,7 +15,6 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import br.com.academiadev.BatataComBaconSpring.enums.Objetivo;
 import br.com.academiadev.BatataComBaconSpring.enums.Porte;
 import br.com.academiadev.BatataComBaconSpring.enums.Sexo;
-import br.com.academiadev.BatataComBaconSpring.dto.post.PostPetDTO;
 import br.com.academiadev.BatataComBaconSpring.enums.Especie;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -54,17 +53,4 @@ public class Pet extends AuditEntity<Long> {
 	@NotNull
 	@ManyToOne
 	private User usuario;
-
-	public Pet(PostPetDTO dto) {
-		super();
-		this.nome = dto.getNome();
-		this.sexo = dto.getSexo();
-		this.porte = dto.getPorte();
-		this.especie = dto.getEspecie();
-		this.objetivo = dto.getObjetivo();
-		this.localPet = dto.getLocalPet();
-		this.usuario = new User(dto.getIdUsuario());
-	}
-	
-	
 }
