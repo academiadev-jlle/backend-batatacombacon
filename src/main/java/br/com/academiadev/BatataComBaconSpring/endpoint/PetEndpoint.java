@@ -71,7 +71,7 @@ public class PetEndpoint {
 		@ApiResponse(code = 200 , message = "Pet alterado com sucesso"), //
 		@ApiResponse(code = 404, message = "Pet não encontrado") //
 	})
-	@PutMapping("/{idPet}")
+	@PutMapping("pet/{idPet}")
 	public Pet alteraPet(PostPetDTO dto, @RequestParam("idPet") Long idPet) {
 		Pet pet = mapper.toPet(dto);
 		pet.setId(idPet);
