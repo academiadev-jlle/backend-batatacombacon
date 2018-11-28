@@ -1,6 +1,8 @@
 package br.com.academiadev.BatataComBaconSpring.model;
 
 
+import java.util.ArrayList;
+
 import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
 import javax.persistence.EnumType;
@@ -53,6 +55,9 @@ public class Pet extends AuditEntity<Long> {
 
 	@NotBlank
 	private String localPet;
+	
+	@Builder.Default
+	private ArrayList<Long> fotos = new ArrayList<Long>();
 	
 	@NotNull
 	@ManyToOne

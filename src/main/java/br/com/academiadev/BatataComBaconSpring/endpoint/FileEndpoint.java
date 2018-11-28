@@ -18,7 +18,10 @@ import br.com.academiadev.BatataComBaconSpring.dto.request.RequestFileDTO;
 import br.com.academiadev.BatataComBaconSpring.exception.ImagemNaoEncontradaException;
 import br.com.academiadev.BatataComBaconSpring.mapper.FileMapper;
 import br.com.academiadev.BatataComBaconSpring.model.File;
+import br.com.academiadev.BatataComBaconSpring.model.Pet;
 import br.com.academiadev.BatataComBaconSpring.repository.FileRepository;
+import br.com.academiadev.BatataComBaconSpring.repository.PetRepository;
+import br.com.academiadev.BatataComBaconSpring.service.PetService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
@@ -30,7 +33,13 @@ import io.swagger.annotations.ApiResponses;
 public class FileEndpoint {
 
 	@Autowired
-	private FileRepository repository;
+	private FileRepository fileRepository;
+	
+	@Autowired
+	private PetRepository petRepository;
+	
+	@Autowired
+	private PetService petService;
 
 	@Autowired
 	private FileMapper mapper;
@@ -43,7 +52,22 @@ public class FileEndpoint {
 	})
 	public RequestFileDTO uploadImage(@RequestParam MultipartFile imagem) throws IOException {
 		File file = new File(imagem.getOriginalFilename(), imagem.getContentType(), imagem.getBytes());
-		return mapper.toDTO(repository.save(file));
+		return mapper.toDTO(fileRepository.save(file));
+	}
+	
+	@PostMapping("/images/pet/{idPet}")
+	@ApiOperation("Faz o upload de uma imagem para um pet")
+	@ApiResponses({ //
+			@ApiResponse(code = 200, message = "Imagem salva com sucesso!"), //
+			@ApiResponse(code = 400, message = "Erro da exception")//
+	})
+	public RequestFileDTO uploadPetImage(@PathVariable("idPet") Long idPet, @RequestParam MultipartFile imagem) throws IOException {
+		File file = new File(imagem.getOriginalFilename(), imagem.getContentType(), imagem.getBytes());
+		file = fileRepository.save(file);
+		Pet pet = petService.findById(idPet);
+		pet.getFotos().add(file.getId());
+		petRepository.flush();
+		return mapper.toDTO(file);
 	}
 
 	@GetMapping("/images/{idImage}")
@@ -53,7 +77,7 @@ public class FileEndpoint {
 			@ApiResponse(code = 404, message = "Imagem não encontrada")//
 	})
 	public ResponseEntity<byte[]> downloadImage(@PathVariable("idImage") Long idImage) {
-		File file = repository.findById(idImage)
+		File file = fileRepository.findById(idImage)
 				.orElseThrow(() -> new ImagemNaoEncontradaException("Imagem não encontrada"));
 		return ResponseEntity.ok()
 				.header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + file.getNome() + "\"")

@@ -1,5 +1,7 @@
 package br.com.academiadev.BatataComBaconSpring.dto.request;
 
+import java.util.ArrayList;
+
 import br.com.academiadev.BatataComBaconSpring.enums.Especie;
 import br.com.academiadev.BatataComBaconSpring.enums.Objetivo;
 import br.com.academiadev.BatataComBaconSpring.enums.Porte;
@@ -22,6 +24,8 @@ public class RequestPetDTO {
 	private Objetivo objetivo;
 	
 	private String localPet;
+	
+	private ArrayList<Long> fotos;
 	
 	private Long idUsuario;
 	
