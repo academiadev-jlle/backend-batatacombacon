@@ -1,5 +1,7 @@
 package br.com.academiadev.BatataComBaconSpring.dto.post;
 
+import java.util.ArrayList;
+
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.validation.constraints.NotBlank;
@@ -46,6 +48,9 @@ public class PostPetDTO {
 	@NotBlank
 	@ApiModelProperty(example = "Morro da vó Salvelina", name = "Local onde o Pet foi encontrado / perdido / acolhido")
 	private String localPet;
+	
+	@ApiModelProperty(example = "[]", name = "IDs das imagens do Pet" )
+	private ArrayList<Long> fotos;
 	
 	@NotNull
 	@ApiModelProperty(example = "1", name = "Identificador do Usuário Criador")

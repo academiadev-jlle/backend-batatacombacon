@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import br.com.academiadev.BatataComBaconSpring.exception.ImagemNaoEncontradaException;
+import br.com.academiadev.BatataComBaconSpring.exception.OperacaoNaoSuportadaException;
 import br.com.academiadev.BatataComBaconSpring.exception.PetNaoEncontradoException;
 import br.com.academiadev.BatataComBaconSpring.exception.UserNaoEncontradoException;
 
@@ -35,6 +36,12 @@ public class ExceptionAdvice {
 	@ExceptionHandler(ImagemNaoEncontradaException.class)
 	@ResponseStatus(code = HttpStatus.BAD_REQUEST)
 	public ExceptionResponse handleImagemNaoEncontradaException(ImagemNaoEncontradaException ex) {
+		return new ExceptionResponse(HttpStatus.BAD_REQUEST, ex.getMessage());
+	}
+	
+	@ExceptionHandler(OperacaoNaoSuportadaException.class)
+	@ResponseStatus(code = HttpStatus.BAD_REQUEST)
+	public ExceptionResponse handleOperacaoNaoSuportadaException(OperacaoNaoSuportadaException ex) {
 		return new ExceptionResponse(HttpStatus.BAD_REQUEST, ex.getMessage());
 	}
 

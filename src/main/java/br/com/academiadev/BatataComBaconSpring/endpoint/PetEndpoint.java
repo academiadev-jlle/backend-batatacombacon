@@ -54,7 +54,8 @@ public class PetEndpoint {
 
 	@ApiOperation("Cria um Pet")
 	@ApiResponses({ //
-			@ApiResponse(code = 201, message = "Pet criado com sucesso!") //
+			@ApiResponse(code = 201, message = "Pet criado com sucesso!"), //
+			@ApiResponse(code = 400, message = "Não foi possível validar as informações"), //
 	})
 	@ResponseStatus(code = HttpStatus.CREATED)
 	@PostMapping("pet")
@@ -72,9 +73,11 @@ public class PetEndpoint {
 		@ApiResponse(code = 404, message = "Pet não encontrado") //
 	})
 	@PutMapping("pet/{idPet}")
-	public Pet alteraPet(PostPetDTO dto, @RequestParam("idPet") Long idPet) {
+	public Pet alteraPet(@RequestBody @Valid PostPetDTO dto, @RequestParam("idPet") Long idPet) {
+		User usuario = userService.findById(dto.getIdUsuario());
 		Pet pet = mapper.toPet(dto);
 		pet.setId(idPet);
+		pet.setUsuario(usuario);
 		return petService.alteraPet(pet);
 	}
 	

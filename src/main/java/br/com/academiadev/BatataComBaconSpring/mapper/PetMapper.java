@@ -18,7 +18,6 @@ public interface PetMapper {
 		@Mapping(target = "createdAt", ignore = true), //
 		@Mapping(target = "updatedAt", ignore = true), //
 		@Mapping(target = "usuario", ignore = true), //
-		@Mapping(target = "fotos", ignore = true), //
 	})
 	Pet toPet(PostPetDTO dto);
 	@Mappings({//
