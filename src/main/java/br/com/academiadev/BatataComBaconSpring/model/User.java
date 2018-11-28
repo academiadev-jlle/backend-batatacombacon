@@ -1,5 +1,6 @@
 package br.com.academiadev.BatataComBaconSpring.model;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
 import javax.validation.constraints.Email;
@@ -25,6 +26,7 @@ public class User extends AuditEntity<Long> {
 
 	@NotBlank
 	@Email
+	@Column(unique = true)
 	private String email;
 
 	@NotBlank
