@@ -56,8 +56,7 @@ public class Pet extends AuditEntity<Long> {
 	@NotBlank
 	private String localPet;
 	
-	@Builder.Default
-	private ArrayList<Long> fotos = new ArrayList<Long>();
+	private ArrayList<Long> fotos;
 	
 	@NotNull
 	@ManyToOne

@@ -1,5 +1,7 @@
 package br.com.academiadev.BatataComBaconSpring.service;
 
+import java.util.ArrayList;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
@@ -17,9 +19,12 @@ public class PetService {
 	@Autowired
 	private PetRepository repository;
 	
-	@Autowired UserService userService;
+	@Autowired 
+	private UserService userService;
 	
+	//Inicializando ArrayList do pet recém criado pra evitar NullPointerException
 	public Pet save(Pet pet) {
+		pet.setFotos(new ArrayList<Long>());
 		return repository.save(pet);
 	}
 	
@@ -52,5 +57,9 @@ public class PetService {
 	
 	public void deleteById(Long idPet) {
 		repository.delete(findById(idPet));
+	}
+	
+	public void flush() {
+		repository.flush();
 	}
 }
