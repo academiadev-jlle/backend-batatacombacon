@@ -11,7 +11,6 @@ import org.springframework.stereotype.Service;
 import br.com.academiadev.BatataComBaconSpring.exception.OperacaoNaoSuportadaException;
 import br.com.academiadev.BatataComBaconSpring.exception.PetNaoEncontradoException;
 import br.com.academiadev.BatataComBaconSpring.model.Pet;
-import br.com.academiadev.BatataComBaconSpring.model.User;
 import br.com.academiadev.BatataComBaconSpring.repository.PetRepository;
 
 @Service
@@ -20,11 +19,8 @@ public class PetService {
 	@Autowired
 	private PetRepository repository;
 
-	@Autowired
-	private UserService userService;
-
 	/*
-	 * Inicializando ArrayList do pet recém criado caso seja nulo pra evitar
+	 * Inicializando ArrayList de fotos do pet recém criado caso seja nulo pra evitar
 	 * NullPointerException
 	 */
 	public Pet save(Pet pet) {
@@ -34,6 +30,12 @@ public class PetService {
 		return repository.save(pet);
 	}
 
+	/*
+	 * Aqui eu recebo um pet que foi modificado, e chamo da DB o Pet de mesmo ID
+	 * Caso o usuário tenha sido modificado, retorno OperacaoNaoSuportadaException.
+	 * Caso seja o mesmo usuário, aplico as alterações no pet da DB e retorno as
+	 * novas informações
+	 */
 	public Pet alteraPet(Pet petModificado) {
 		Pet pet = repository.findById(petModificado.getId())
 				.orElseThrow(() -> new PetNaoEncontradoException("Pet não encontrado"));
@@ -52,15 +54,8 @@ public class PetService {
 		}
 	}
 
-	public Page<Pet> findAll(Pet pet, Pageable pageable) {
-		return repository.findAll(Example.of(pet), pageable);
-	}
-
-	public Page<Pet> findAllFromUser(Long idUser, Pageable pageable) {
-		User usuario = userService.findById(idUser);
-		Pet pet = new Pet();
-		pet.setUsuario(usuario);
-		return repository.findAll(Example.of(pet), pageable);
+	public Page<Pet> findAll(Example<Pet> pet, Pageable pageable) {
+		return repository.findAll(pet, pageable);
 	}
 
 	public Pet findById(Long idPet) {

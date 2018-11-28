@@ -56,6 +56,7 @@ public class Pet extends AuditEntity<Long> {
 	@NotBlank
 	private String localPet;
 	
+	//Um ArrayList para armazenar os IDs das fotos
 	private ArrayList<Long> fotos;
 	
 	@NotNull
