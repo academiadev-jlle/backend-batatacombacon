@@ -2,6 +2,7 @@ package br.com.academiadev.BatataComBaconSpring.config;
 
 import java.io.IOException;
 
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -43,6 +44,11 @@ public class ExceptionAdvice {
 	@ResponseStatus(code = HttpStatus.BAD_REQUEST)
 	public ExceptionResponse handleOperacaoNaoSuportadaException(OperacaoNaoSuportadaException ex) {
 		return new ExceptionResponse(HttpStatus.BAD_REQUEST, ex.getMessage());
+	}
+	
+	@ExceptionHandler(DataIntegrityViolationException.class)
+	public ExceptionResponse handleDataIntegrityViolationException(DataIntegrityViolationException ex) {
+		return new ExceptionResponse(HttpStatus.BAD_REQUEST, "Email já cadastrado");
 	}
 
 }
