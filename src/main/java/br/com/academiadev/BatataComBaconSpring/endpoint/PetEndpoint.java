@@ -3,6 +3,7 @@ package br.com.academiadev.BatataComBaconSpring.endpoint;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -54,7 +55,8 @@ public class PetEndpoint {
 
 	@ApiOperation("Cria um Pet")
 	@ApiResponses({ //
-			@ApiResponse(code = 201, message = "Pet criado com sucesso!") //
+			@ApiResponse(code = 201, message = "Pet criado com sucesso!"), //
+			@ApiResponse(code = 400, message = "Não foi possível validar as informações"), //
 	})
 	@ResponseStatus(code = HttpStatus.CREATED)
 	@PostMapping("pet")
@@ -65,25 +67,35 @@ public class PetEndpoint {
 		return mapper.toDTO(petService.save(pet));
 
 	}
-	
+
+	/*
+	 * Aqui eu recebo um PetDTO e o id de um Pet existente Uso estas informações
+	 * para montar um pet e chamo o service solicitando a alteração
+	 */
 	@ApiOperation("Altera um Pet")
 	@ApiResponses({ //
-		@ApiResponse(code = 200 , message = "Pet alterado com sucesso"), //
-		@ApiResponse(code = 404, message = "Pet não encontrado") //
+			@ApiResponse(code = 200, message = "Pet alterado com sucesso"), //
+			@ApiResponse(code = 404, message = "Pet não encontrado") //
 	})
 	@PutMapping("pet/{idPet}")
-	public Pet alteraPet(PostPetDTO dto, @RequestParam("idPet") Long idPet) {
+	public Pet alteraPet(@RequestBody @Valid PostPetDTO dto, @RequestParam("idPet") Long idPet) {
+		User usuario = userService.findById(dto.getIdUsuario());
 		Pet pet = mapper.toPet(dto);
 		pet.setId(idPet);
+		pet.setUsuario(usuario);
 		return petService.alteraPet(pet);
 	}
-	
+
+	/*
+	 * Esta função pode receber OPCIONALMENTE varios itens que podem ser usados na
+	 * filtragem. Eu os utilizo para montar um pet exemplo para o serviço de busca.
+	 */
 	@ApiOperation("Retorna a lista de pets, com possibilidade de filtragem")
 	@ApiResponses({ //
 			@ApiResponse(code = 200, message = "Lista retornada com sucesso!") //
 	})
 	@GetMapping("pet")
-	public Page<RequestPetDTO> listaPets(//
+	public Page<RequestPetDTO> listaPets( //
 			@RequestParam(required = false, defaultValue = "0") Integer page, //
 			@RequestParam(required = false, defaultValue = "20") Integer size, //
 			@RequestParam(required = false) Especie especie, //
@@ -93,7 +105,7 @@ public class PetEndpoint {
 	) {
 		Pageable pageable = PageRequest.of(page, size);
 		Pet pet = Pet.builder().especie(especie).porte(porte).objetivo(objetivo).sexo(sexo).build();
-		return Utils.toPageDTO(petService.findAll(pet, pageable), mapper::toDTO);
+		return Utils.toPageDTO(petService.findAll(Example.of(pet), pageable), mapper::toDTO);
 	}
 
 	@ApiOperation("Retorna a lista de Pets de um Usuário")
@@ -103,9 +115,16 @@ public class PetEndpoint {
 	@GetMapping("usuario/{idUser}/pet")
 	public Page<RequestPetDTO> listaPetsDeUsuario(@PathVariable("idUser") Long idUser,
 			@RequestParam(required = false, defaultValue = "0") Integer page,
-			@RequestParam(required = false, defaultValue = "20") Integer size) {
+			@RequestParam(required = false, defaultValue = "20") Integer size,
+			@RequestParam(required = false) Especie especie, //
+			@RequestParam(required = false) Porte porte, //
+			@RequestParam(required = false) Objetivo objetivo, //
+			@RequestParam(required = false) Sexo sexo //
+	) {
 		Pageable pageable = PageRequest.of(page, size);
-		return Utils.toPageDTO(petService.findAllFromUser(idUser, pageable), mapper::toDTO);
+		User usuario = new User(idUser);
+		Pet pet = Pet.builder().especie(especie).porte(porte).objetivo(objetivo).sexo(sexo).usuario(usuario).build();
+		return Utils.toPageDTO(petService.findAll(Example.of(pet), pageable), mapper::toDTO);
 	}
 
 	@ApiOperation("Retorna as informações de um pet")
