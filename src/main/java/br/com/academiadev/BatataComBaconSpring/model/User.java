@@ -1,31 +1,37 @@
 package br.com.academiadev.BatataComBaconSpring.model;
 
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.EntityListeners;
 import javax.validation.constraints.Email;
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
-import lombok.AllArgsConstructor;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
-@Entity
 @Data
-@AllArgsConstructor
+@EqualsAndHashCode(callSuper = true)
 @NoArgsConstructor
-public class User {
-	@Id
-	@GeneratedValue
-	private Long id;
-	@NotNull(message = "Usuário precisa de um nome válido")
+@Entity
+@EntityListeners(AuditingEntityListener.class)
+public class User extends AuditEntity<Long> {
+
+	@NotBlank(message = "Usuário precisa de um nome válido")
 	@Size(min = 3, max = 120)
 	private String nome;
-	@NotNull
+
+	@NotBlank
 	@Email
 	private String email;
-	@NotNull
+
+	@NotBlank
 	@Size(min = 6, max = 30)
 	private String senha;
+
+	public User(Long id) {
+		this.id = id;
+	}
 }
