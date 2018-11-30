@@ -31,6 +31,8 @@ public class User extends AuditEntity<Long> {
 
 	@NotBlank
 	private String senha;
+	
+	private String role = "ROLE_USER";
 
 	public User(Long id) {
 		this.id = id;

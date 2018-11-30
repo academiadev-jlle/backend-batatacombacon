@@ -1,5 +1,6 @@
 package br.com.academiadev.BatataComBaconSpring.endpoint;
 
+import javax.annotation.security.RolesAllowed;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,6 +52,7 @@ public class UserEndpoint {
 		return mapper.toDTO(service.save(mapper.toUser(dto)));
 	}
 
+	@RolesAllowed("ROLE_ADMIN")
 	@ApiOperation(value = "Retorna a lista de usuarios")
 	@ApiResponses(value = { @ApiResponse(code = 200, message = "Lista retornada com sucesso") })
 	@GetMapping

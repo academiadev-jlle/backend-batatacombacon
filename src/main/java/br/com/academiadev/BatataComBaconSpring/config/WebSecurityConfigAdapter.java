@@ -35,6 +35,7 @@ public class WebSecurityConfigAdapter extends WebSecurityConfigurerAdapter {
 			user.setNome("Administrador do Sistema");
 			user.setEmail("admin@backendcombacon.com.br");
 			user.setSenha(passwordEncoder().encode("AdminComBacon"));
+			user.setRole("ROLE_ADMIN");
 			userRepository.save(user);
 		}
 
