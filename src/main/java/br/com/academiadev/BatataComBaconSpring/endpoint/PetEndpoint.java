@@ -112,7 +112,7 @@ public class PetEndpoint {
 	@ApiResponses({ //
 			@ApiResponse(code = 200, message = "Lista retornada com sucesso") //
 	})
-	@GetMapping("usuario/{idUser}/pet")
+	@GetMapping("user/{idUser}/pet")
 	public Page<RequestPetDTO> listaPetsDeUsuario(@PathVariable("idUser") Long idUser,
 			@RequestParam(required = false, defaultValue = "0") Integer page,
 			@RequestParam(required = false, defaultValue = "20") Integer size,
