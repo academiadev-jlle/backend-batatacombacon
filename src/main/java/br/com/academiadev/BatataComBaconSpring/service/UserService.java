@@ -3,6 +3,7 @@ package br.com.academiadev.BatataComBaconSpring.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import br.com.academiadev.BatataComBaconSpring.exception.UserNaoEncontradoException;
@@ -16,6 +17,7 @@ public class UserService {
 	private UserRepository repository;
 
 	public User save(User usuario) {
+		usuario.setSenha(new BCryptPasswordEncoder().encode(usuario.getSenha()));
 		return repository.save(usuario);
 	}
 	
@@ -23,7 +25,7 @@ public class UserService {
 		User user = repository.findById(userModificado.getId()).orElseThrow(() -> new UserNaoEncontradoException("Usuário não encontrado"));
 		user.setNome(userModificado.getNome());
 		user.setEmail(userModificado.getEmail());
-		user.setSenha(userModificado.getSenha());
+		user.setSenha(new BCryptPasswordEncoder().encode(userModificado.getSenha()));
 		repository.flush();
 		return user;
 	}
