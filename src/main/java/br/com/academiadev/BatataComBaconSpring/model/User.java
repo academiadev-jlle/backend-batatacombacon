@@ -30,7 +30,6 @@ public class User extends AuditEntity<Long> {
 	private String email;
 
 	@NotBlank
-	@Size(min = 6, max = 30)
 	private String senha;
 
 	public User(Long id) {
