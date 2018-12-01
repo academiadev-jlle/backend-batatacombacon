@@ -46,17 +46,17 @@ public class WebSecurityConfigAdapter extends WebSecurityConfigurerAdapter {
 				.passwordEncoder(passwordEncoder());
 	}
 
-	@Bean
-	public CorsFilter corsFilter() {
-		CorsConfiguration config = new CorsConfiguration();
-		config.setAllowCredentials(true);
-		config.addAllowedOrigin("*");
-		config.addAllowedHeader("*");
-		config.addAllowedMethod("*");
-
-		UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-		source.registerCorsConfiguration("/**", config);
-
-		return new CorsFilter(source);
-	}
+//	@Bean
+//	public CorsFilter corsFilter() {
+//		CorsConfiguration config = new CorsConfiguration();
+//		config.setAllowCredentials(true);
+//		config.addAllowedOrigin("*");
+//		config.addAllowedHeader("*");
+//		config.addAllowedMethod("*");
+//
+//		UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+//		source.registerCorsConfiguration("/**", config);
+//
+//		return new CorsFilter(source);
+//	}
 }
