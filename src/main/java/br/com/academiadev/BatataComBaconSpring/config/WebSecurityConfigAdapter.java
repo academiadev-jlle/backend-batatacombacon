@@ -8,6 +8,9 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.web.filter.CorsFilter;
 
 import br.com.academiadev.BatataComBaconSpring.dto.UserLoginDTO;
 import br.com.academiadev.BatataComBaconSpring.model.User;
@@ -41,5 +44,19 @@ public class WebSecurityConfigAdapter extends WebSecurityConfigurerAdapter {
 
 		builder.userDetailsService(email -> new UserLoginDTO(userRepository.findByEmail(email)))
 				.passwordEncoder(passwordEncoder());
+	}
+
+	@Bean
+	public CorsFilter corsFilter() {
+		CorsConfiguration config = new CorsConfiguration();
+		config.setAllowCredentials(true);
+		config.addAllowedOrigin("*");
+		config.addAllowedHeader("*");
+		config.addAllowedMethod("*");
+
+		UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+		source.registerCorsConfiguration("/**", config);
+
+		return new CorsFilter(source);
 	}
 }
