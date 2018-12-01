@@ -27,6 +27,10 @@ public class PostPetDTO {
 	private String nome;
 	
 	@NotNull
+	@ApiModelProperty(example = "Oi, eu sou o seu Pet <3", name = "Resumo ou Descrição")
+	private String descricao;
+	
+	@NotNull
 	@ApiModelProperty(example = "MACHO", name = "Sexo do pet")
 	private Sexo sexo;
 	
