@@ -47,6 +47,7 @@ public class ExceptionAdvice {
 	}
 	
 	@ExceptionHandler(DataIntegrityViolationException.class)
+	@ResponseStatus(code = HttpStatus.BAD_REQUEST)
 	public ExceptionResponse handleDataIntegrityViolationException(DataIntegrityViolationException ex) {
 		return new ExceptionResponse(HttpStatus.BAD_REQUEST, "Email já cadastrado");
 	}
