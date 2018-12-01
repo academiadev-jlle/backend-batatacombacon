@@ -38,14 +38,18 @@ dependencies {
 	implementation('org.springframework.boot:spring-boot-starter-web')
 	implementation('org.springframework.boot:spring-boot-starter-data-jpa')
 	implementation('org.springframework.boot:spring-boot-starter-security')
-	implementation('org.springframework.security.oauth:spring-security-oauth2:2.3.4.RELEASE')
+	implementation('org.springframework.security:spring-security-test')
+	implementation('org.springframework.security.oauth2:spring-security-oauth2:2.3.4.RELEASE')
 	implementation('javax.xml:jaxb-api:2.1')
   	implementation('io.springfox:springfox-swagger2:2.9.2')
 	implementation('io.springfox:springfox-swagger-ui:2.9.2')
-	testImplementation('org.springframework.boot:spring-boot-starter-test')
 	compileOnly('org.projectlombok:lombok:1.18.4')
 	annotationProcessor('org.projectlombok:lombok:1.18.4')
+	testCompile('org.springframework.boot:spring-boot-starter-test')
 	annotationProcessor('org.mapstruct:mapstruct-processor:1.2.0.Final')
+	
+	testImplementation('org.springframework.boot:spring-boot-starter-test')
+    testImplementation('org.springframework.security:spring-security-test:5.1.1.RELEASE')
 }
 sourceSets {
     main.java.srcDirs += "build/generated/source/apt/main"
