@@ -37,7 +37,6 @@ import io.swagger.annotations.ApiResponses;
 @RestController
 @RequestMapping("/user")
 @Api("Endpoint de usuário")
-@CrossOrigin
 public class UserEndpoint {
 
 	@Autowired
