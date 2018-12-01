@@ -41,9 +41,9 @@ public class ExceptionAdvice {
 	}
 	
 	@ExceptionHandler(OperacaoNaoSuportadaException.class)
-	@ResponseStatus(code = HttpStatus.BAD_REQUEST)
+	@ResponseStatus(code = HttpStatus.UNAUTHORIZED)
 	public ExceptionResponse handleOperacaoNaoSuportadaException(OperacaoNaoSuportadaException ex) {
-		return new ExceptionResponse(HttpStatus.BAD_REQUEST, ex.getMessage());
+		return new ExceptionResponse(HttpStatus.UNAUTHORIZED, ex.getMessage());
 	}
 	
 	@ExceptionHandler(DataIntegrityViolationException.class)

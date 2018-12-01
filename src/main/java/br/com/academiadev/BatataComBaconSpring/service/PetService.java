@@ -50,7 +50,7 @@ public class PetService {
 			repository.flush();
 			return pet;
 		} else {
-			throw new OperacaoNaoSuportadaException("Não é possível alterar o usuário do pet");
+			throw new OperacaoNaoSuportadaException("Este pet não é seu!");
 		}
 	}
 
