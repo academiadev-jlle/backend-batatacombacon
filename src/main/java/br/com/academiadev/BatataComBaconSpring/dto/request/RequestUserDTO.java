@@ -9,8 +9,6 @@ public class RequestUserDTO {
 	private Long id;
 	
 	private String nome;
-	
-	private String descricao;
 
 	private String email;
 	

@@ -15,6 +15,8 @@ public class RequestPetDTO {
 	
 	private String nome;
 	
+	private String descricao; 
+	
 	private Sexo sexo;
 	
 	private Porte porte;
