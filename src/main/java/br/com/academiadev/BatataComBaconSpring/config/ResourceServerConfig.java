@@ -15,7 +15,7 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
 		http.cors().and().authorizeRequests().antMatchers(HttpMethod.GET, "/pet/**", "/especies", "/objetivos", "/porte", "/sexo", "/images/*").permitAll()
 		.antMatchers(HttpMethod.POST, "/user").permitAll()
 		.antMatchers(HttpMethod.GET, "/user").hasAnyRole("ADMIN")
-        .antMatchers("/v2/api-docs", "/swagger-resources/configuration/ui", "/swagger-resources", "/swagger-resources/configuration/security", "/swagger-ui.html", "/webjars/**").permitAll()
+        .antMatchers("/oauth/**", "/v2/api-docs", "/swagger-resources/configuration/ui", "/swagger-resources", "/swagger-resources/configuration/security", "/swagger-ui.html", "/webjars/**").permitAll()
         .anyRequest().authenticated();
 	}
 }
