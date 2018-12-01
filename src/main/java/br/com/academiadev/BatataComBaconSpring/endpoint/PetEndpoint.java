@@ -8,6 +8,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -27,6 +28,7 @@ import br.com.academiadev.BatataComBaconSpring.enums.Especie;
 import br.com.academiadev.BatataComBaconSpring.enums.Objetivo;
 import br.com.academiadev.BatataComBaconSpring.enums.Porte;
 import br.com.academiadev.BatataComBaconSpring.enums.Sexo;
+import br.com.academiadev.BatataComBaconSpring.exception.OperacaoNaoSuportadaException;
 import br.com.academiadev.BatataComBaconSpring.mapper.PetMapper;
 import br.com.academiadev.BatataComBaconSpring.model.Pet;
 import br.com.academiadev.BatataComBaconSpring.model.User;
@@ -61,6 +63,7 @@ public class PetEndpoint {
 	@ResponseStatus(code = HttpStatus.CREATED)
 	@PostMapping("pet")
 	public RequestPetDTO criaPet(@RequestBody @Valid PostPetDTO dto) {
+		verificaAutorizado(dto.getIdUsuario());
 		User usuario = userService.findById(dto.getIdUsuario());
 		Pet pet = mapper.toPet(dto);
 		pet.setUsuario(usuario);
@@ -79,6 +82,7 @@ public class PetEndpoint {
 	})
 	@PutMapping("pet/{idPet}")
 	public Pet alteraPet(@RequestBody @Valid PostPetDTO dto, @RequestParam("idPet") Long idPet) {
+		verificaAutorizado(dto.getIdUsuario());
 		User usuario = userService.findById(dto.getIdUsuario());
 		Pet pet = mapper.toPet(dto);
 		pet.setId(idPet);
@@ -121,6 +125,7 @@ public class PetEndpoint {
 			@RequestParam(required = false) Objetivo objetivo, //
 			@RequestParam(required = false) Sexo sexo //
 	) {
+		verificaAutorizado(idUser);
 		Pageable pageable = PageRequest.of(page, size);
 		User usuario = new User(idUser);
 		Pet pet = Pet.builder().especie(especie).porte(porte).objetivo(objetivo).sexo(sexo).usuario(usuario).build();
@@ -142,7 +147,21 @@ public class PetEndpoint {
 	})
 	@DeleteMapping("pet/{idPet}")
 	public ExceptionResponse deletarPet(@PathVariable("idPet") Long idPet) {
+		verificaAutorizado(petService.findById(idPet).getUsuario().getId());
 		petService.deleteById(idPet);
 		return new ExceptionResponse(HttpStatus.OK, "Pet excluído com sucesso");
+	}
+	
+	private void verificaAutorizado(Long idUser) {
+		/*
+		 * Confere se é o mesmo usuário ou se é ADMIN. Caso não seja nenhum dos 2 ,
+		 * retorna OperacaoNaoSuportadaException.
+		 */
+		User user = userService.findById(idUser);
+		if (!(SecurityContextHolder.getContext().getAuthentication().getName().equals(user.getEmail())
+				| SecurityContextHolder.getContext().getAuthentication().getAuthorities().stream()
+						.anyMatch(r -> r.getAuthority().equals("ROLE_ADMIN")))) {
+			throw new OperacaoNaoSuportadaException("Ação não autorizada");
+		}
 	}
 }
