@@ -41,6 +41,7 @@ public class PetService {
 				.orElseThrow(() -> new PetNaoEncontradoException("Pet não encontrado"));
 		if (petModificado.getUsuario().getId().equals(pet.getUsuario().getId())) {
 			pet.setNome(petModificado.getNome());
+			pet.setDescricao(petModificado.getDescricao());
 			pet.setEspecie(petModificado.getEspecie());
 			pet.setLocalPet(petModificado.getLocalPet());
 			pet.setObjetivo(petModificado.getObjetivo());

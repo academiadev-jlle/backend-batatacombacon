@@ -36,6 +36,9 @@ public class Pet extends AuditEntity<Long> {
 	@NotBlank
 	@Size(min = 3, max = 30)
 	private String nome;
+	
+	@NotNull
+	private String descricao;
 
 	@NotNull
 	@Enumerated(EnumType.STRING)
