@@ -1,6 +1,8 @@
 package br.com.academiadev.BatataComBaconSpring.endpoint;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -30,12 +32,15 @@ public class EnumEndpoint {
 	})
 	@ResponseStatus(code = HttpStatus.OK)
 	@GetMapping(value = "especies")
-	public HashMap<String,String> getEspecies() {
-		HashMap<String,String> especies = new HashMap<>();
+	public List<HashMap<String, String>>  getEspecies() {
+		List<HashMap<String, String>> list = new ArrayList<HashMap<String,String>>();
 		for (Especie especie : Especie.values()) {
-			especies.put(especie.name(), especie.getDescricao());
+			HashMap<String,String> especies = new HashMap<>();
+			especies.put("especie", especie.name());
+			especies.put("descricao", especie.getDescricao());
+			list.add(especies);
 		}
-		return especies;
+		return list;
 	}
 	
 	@ApiOperation("Pegar objetivos para pets")
@@ -44,12 +49,15 @@ public class EnumEndpoint {
 	})
 	@ResponseStatus(code = HttpStatus.OK)
 	@GetMapping(value = "objetivos")
-	public HashMap<String,String> getObjetivos() {
-		HashMap<String,String> objetivos = new HashMap<>();
+	public List<HashMap<String, String>> getObjetivos() {
+		List<HashMap<String, String>> list = new ArrayList<>();
 		for (Objetivo objetivo : Objetivo.values()) {
-			objetivos.put(objetivo.name(), objetivo.getDescricao());
+			HashMap<String,String> objetivos = new HashMap<>();
+			objetivos.put("objetivo", objetivo.name());
+			objetivos.put("descricao", objetivo.getDescricao());
+			list.add(objetivos);
 		}
-		return objetivos;
+		return list;
 	}
 	
 	@ApiOperation("Pegar portes para pets")
@@ -58,12 +66,15 @@ public class EnumEndpoint {
 	})
 	@ResponseStatus(code = HttpStatus.OK)
 	@GetMapping(value = "porte")
-	public HashMap<String,String> getPorte() {
-		HashMap<String,String> portes = new HashMap<>();
+	public List<HashMap<String, String>> getPorte() {
+		List<HashMap<String, String>> list = new ArrayList<>();
 		for (Porte porte : Porte.values()) {
-			portes.put(porte.name(), porte.getDescricao());
+			HashMap<String,String> portes = new HashMap<>();
+			portes.put("porte", porte.name());
+			portes.put("descricao", porte.getDescricao());
+			list.add(portes);
 		}
-		return portes;
+		return list;
 	}
 	
 	@ApiOperation("Pegar sexos para pets")
@@ -72,11 +83,14 @@ public class EnumEndpoint {
 	})
 	@ResponseStatus(code = HttpStatus.OK)
 	@GetMapping(value = "sexo")
-	public HashMap<String,String> getSexo() {
-		HashMap<String,String> sexos = new HashMap<>();
+	public List<HashMap<String, String>> getSexo() {
+		List<HashMap<String, String>> list = new ArrayList<>();
 		for (Sexo sexo : Sexo.values()) {
-			sexos.put(sexo.name(), sexo.getDescricao());
+			HashMap<String,String> sexos = new HashMap<>();
+			sexos.put("sexo", sexo.name());
+			sexos.put("descricao", sexo.getDescricao());
+			list.add(sexos);
 		}
-		return sexos;
+		return list;
 	}
 }
