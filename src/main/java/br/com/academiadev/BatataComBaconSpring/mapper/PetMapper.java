@@ -7,7 +7,7 @@ import org.mapstruct.Mapping;
 import org.mapstruct.Mappings;
 
 import br.com.academiadev.BatataComBaconSpring.dto.post.PostPetDTO;
-import br.com.academiadev.BatataComBaconSpring.dto.request.RequestPetDTO;
+import br.com.academiadev.BatataComBaconSpring.dto.request.ResponsePetDTO;
 import br.com.academiadev.BatataComBaconSpring.model.Pet;
 
 @Mapper(componentModel = "spring")
@@ -30,10 +30,10 @@ public interface PetMapper {
 	@Mapping(target = "idUsuario",source = "usuario.id"), //
 	@Mapping(target = "created_at",source = "createdAt", dateFormat = "dd/MM/yyyy HH:mm") //
 })
-	RequestPetDTO toDTO(Pet pet);
+	ResponsePetDTO toDTO(Pet pet);
 	
 	List<Pet> toPet(List<PostPetDTO> dtos);
 	
-	List<RequestPetDTO> toDTO(List<Pet> pets);
+	List<ResponsePetDTO> toDTO(List<Pet> pets);
 
 }

@@ -9,7 +9,7 @@ import br.com.academiadev.BatataComBaconSpring.enums.Sexo;
 import lombok.Data;
 
 @Data
-public class RequestPetDTO {
+public class ResponsePetDTO {
 	
 	private Long id;
 	
