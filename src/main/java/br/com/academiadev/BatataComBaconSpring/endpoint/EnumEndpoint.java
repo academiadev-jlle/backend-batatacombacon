@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -22,6 +23,7 @@ import io.swagger.annotations.ApiResponses;
 @RestController
 @RequestMapping("/")
 @Api("Endpoint de enuns pet")
+@CrossOrigin
 public class EnumEndpoint {
 
 	@ApiOperation("Pegar especies de pets")
