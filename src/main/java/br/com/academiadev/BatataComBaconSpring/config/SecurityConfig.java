@@ -7,9 +7,13 @@ import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableAuthorizationServer;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import br.com.academiadev.BatataComBaconSpring.exception.UserNaoEncontradoException;
 import br.com.academiadev.BatataComBaconSpring.model.User;
@@ -17,6 +21,7 @@ import br.com.academiadev.BatataComBaconSpring.repository.UserRepository;
 
 @Configuration
 @EnableAuthorizationServer
+@EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Bean
@@ -37,13 +42,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		user.setEmail("admin@batatacombacon.com.br");
 		user.setSenha(new BCryptPasswordEncoder().encode("AdminComBacon"));
 		user.setRole("ROLE_ADMIN");
-		
+
 		if (repository.count() == 0) {
 			repository.saveAndFlush(user);
 		}
 
 		auth.userDetailsService(email -> {
-			return repository.findByEmail(email).orElseThrow(() -> new UserNaoEncontradoException("Usuario nao encontrado"));
+			return repository.findByEmail(email)
+					.orElseThrow(() -> new UserNaoEncontradoException("Usuario nao encontrado"));
 		}).passwordEncoder(passwordEncoder());
 
 	}
@@ -65,5 +71,16 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 				"/**/*.css", //
 				"/**/*.js"//
 		);
+	}
+
+	@Bean
+	CorsConfigurationSource corsConfigurationSource() {
+		CorsConfiguration configuration = new CorsConfiguration();
+		configuration.applyPermitDefaultValues();
+		configuration.addAllowedMethod(HttpMethod.PUT);
+		configuration.addAllowedMethod(HttpMethod.DELETE);
+		UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+		source.registerCorsConfiguration("/**", configuration);
+		return source;
 	}
 }
