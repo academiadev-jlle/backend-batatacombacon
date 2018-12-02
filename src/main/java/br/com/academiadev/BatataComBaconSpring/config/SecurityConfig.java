@@ -11,9 +11,6 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableAuthorizationServer;
-import org.springframework.web.cors.CorsConfiguration;
-import org.springframework.web.cors.CorsConfigurationSource;
-import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import br.com.academiadev.BatataComBaconSpring.exception.UserNaoEncontradoException;
 import br.com.academiadev.BatataComBaconSpring.model.User;
@@ -73,6 +70,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		);
 	}
 
+	/*
+	 * Estavamos com problemas ao usar a implementação CORS do Spring
+	 * Ele aparentemente autenticava os endpoins da aplicação mas
+	 * não os do oauth, portanto implementamos uma classe de FiltroCors
+	 */
 //	@Bean
 //	CorsConfigurationSource corsConfigurationSource() {
 //		CorsConfiguration configuration = new CorsConfiguration();
