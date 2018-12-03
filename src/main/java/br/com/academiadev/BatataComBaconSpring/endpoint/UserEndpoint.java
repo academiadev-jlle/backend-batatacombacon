@@ -89,6 +89,12 @@ public class UserEndpoint {
 		verificaAutorizado(idUser);
 		return mapper.toDTO(service.findById(idUser));
 	}
+	
+	@ApiOperation(value = "Retorna o Usuário que está logado")
+	@GetMapping("/whoami")
+	public ResponseUserDTO whoami() {
+		return mapper.toDTO(service.findByEmail(SecurityContextHolder.getContext().getAuthentication().getName()));
+	}
 
 	@ApiOperation(value = "Altera um usuário")
 	@ApiResponses(value = { //
