@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import br.com.academiadev.BatataComBaconSpring.config.ExceptionResponse;
+import br.com.academiadev.BatataComBaconSpring.config.ServerResponse;
 import br.com.academiadev.BatataComBaconSpring.dto.post.PostPetDTO;
 import br.com.academiadev.BatataComBaconSpring.dto.request.ResponsePetDTO;
 import br.com.academiadev.BatataComBaconSpring.enums.Especie;
@@ -144,10 +144,10 @@ public class PetEndpoint {
 			@ApiResponse(code = 200, message = "Pet excluido com sucesso") //
 	})
 	@DeleteMapping("pet/{idPet}")
-	public ExceptionResponse deletarPet(@PathVariable("idPet") Long idPet) {
+	public ServerResponse deletarPet(@PathVariable("idPet") Long idPet) {
 		verificaAutorizado(petService.findById(idPet).getUsuario().getId());
 		petService.deleteById(idPet);
-		return new ExceptionResponse(HttpStatus.OK, "Pet excluído com sucesso");
+		return new ServerResponse(HttpStatus.OK, "Pet excluído com sucesso");
 	}
 	
 	private void verificaAutorizado(Long idUser) {

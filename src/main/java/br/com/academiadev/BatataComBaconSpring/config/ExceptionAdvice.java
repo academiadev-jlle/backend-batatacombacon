@@ -18,37 +18,37 @@ public class ExceptionAdvice {
 
 	@ExceptionHandler(PetNaoEncontradoException.class)
 	@ResponseStatus(code = HttpStatus.NOT_FOUND)
-	public ExceptionResponse handlePetNaoEncontradoException(PetNaoEncontradoException ex) {
-		return new ExceptionResponse(HttpStatus.NOT_FOUND, ex.getMessage());
+	public ServerResponse handlePetNaoEncontradoException(PetNaoEncontradoException ex) {
+		return new ServerResponse(HttpStatus.NOT_FOUND, ex.getMessage());
 	}
 
 	@ExceptionHandler(UserNaoEncontradoException.class)
 	@ResponseStatus(code = HttpStatus.NOT_FOUND)
-	public ExceptionResponse handleUserNaoEncontradoException(UserNaoEncontradoException ex) {
-		return new ExceptionResponse(HttpStatus.NOT_FOUND, ex.getMessage());
+	public ServerResponse handleUserNaoEncontradoException(UserNaoEncontradoException ex) {
+		return new ServerResponse(HttpStatus.NOT_FOUND, ex.getMessage());
 	}
 
 	@ExceptionHandler(IOException.class)
 	@ResponseStatus(code = HttpStatus.BAD_REQUEST)
-	public ExceptionResponse handleIOException(IOException ex) {
-		return new ExceptionResponse(HttpStatus.BAD_REQUEST, ex.getMessage());
+	public ServerResponse handleIOException(IOException ex) {
+		return new ServerResponse(HttpStatus.BAD_REQUEST, ex.getMessage());
 	}
 
 	@ExceptionHandler(ImagemNaoEncontradaException.class)
 	@ResponseStatus(code = HttpStatus.BAD_REQUEST)
-	public ExceptionResponse handleImagemNaoEncontradaException(ImagemNaoEncontradaException ex) {
-		return new ExceptionResponse(HttpStatus.BAD_REQUEST, ex.getMessage());
+	public ServerResponse handleImagemNaoEncontradaException(ImagemNaoEncontradaException ex) {
+		return new ServerResponse(HttpStatus.BAD_REQUEST, ex.getMessage());
 	}
 
 	@ExceptionHandler(OperacaoNaoSuportadaException.class)
 	@ResponseStatus(code = HttpStatus.UNAUTHORIZED)
-	public ExceptionResponse handleOperacaoNaoSuportadaException(OperacaoNaoSuportadaException ex) {
-		return new ExceptionResponse(HttpStatus.UNAUTHORIZED, ex.getMessage());
+	public ServerResponse handleOperacaoNaoSuportadaException(OperacaoNaoSuportadaException ex) {
+		return new ServerResponse(HttpStatus.UNAUTHORIZED, ex.getMessage());
 	}
 
 	@ExceptionHandler(DataIntegrityViolationException.class)
 	@ResponseStatus(code = HttpStatus.BAD_REQUEST)
-	public ExceptionResponse handleDataIntegrityViolationException(DataIntegrityViolationException ex) {
-		return new ExceptionResponse(HttpStatus.BAD_REQUEST, "Email já cadastrado");
+	public ServerResponse handleDataIntegrityViolationException(DataIntegrityViolationException ex) {
+		return new ServerResponse(HttpStatus.BAD_REQUEST, "Email já cadastrado");
 	}
 }

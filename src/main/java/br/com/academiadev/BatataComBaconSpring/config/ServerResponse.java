@@ -7,7 +7,7 @@ import lombok.Getter;
 
 @AllArgsConstructor
 @Getter
-public class ExceptionResponse {
+public class ServerResponse {
 	
 	private HttpStatus status;
 	

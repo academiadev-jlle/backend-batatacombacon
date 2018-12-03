@@ -7,7 +7,9 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import br.com.academiadev.BatataComBaconSpring.exception.UserNaoEncontradoException;
+import br.com.academiadev.BatataComBaconSpring.model.PasswordResetToken;
 import br.com.academiadev.BatataComBaconSpring.model.User;
+import br.com.academiadev.BatataComBaconSpring.repository.PasswordTokenRepository;
 import br.com.academiadev.BatataComBaconSpring.repository.UserRepository;
 
 @Service
@@ -15,6 +17,9 @@ public class UserService {
 	
 	@Autowired
 	private UserRepository repository;
+	
+	@Autowired
+	private PasswordTokenRepository tokenRepository;
 
 	public User save(User usuario) {
 		usuario.setSenha(new BCryptPasswordEncoder().encode(usuario.getSenha()));
@@ -41,4 +46,19 @@ public class UserService {
 	public void deleteById(Long idUser) {
 		repository.delete(findById(idUser));
 	}
+	
+	public User findByEmail(String email) {
+		return repository.findByEmail(email).orElseThrow(() -> new UserNaoEncontradoException("Este email não possui uma conta vinculada"));
+	}
+	
+	public void createPasswordResetTokenForUser(User user, String token) {
+	    PasswordResetToken myToken = new PasswordResetToken(token, user);
+	    tokenRepository.save(myToken);
+	}
+	
+	public void changeUserPassword(User user, String password) {
+	    user.setSenha(new BCryptPasswordEncoder().encode(password));
+	    repository.save(user);
+	}
+	
 }
