@@ -133,6 +133,11 @@ public class UserEndpoint {
 		return new ServerResponse(HttpStatus.OK, "Um email contendo as instruções foi enviado para a sua conta");
 	}
 
+	@ApiOperation(value = "Recebe a nova senha com o token e id para validação")
+	@ApiResponses({ //
+		@ApiResponse(code = 200, message = "Senha alterada com Sucesso"), //
+		@ApiResponse(code = 401, message = "Token inválido")
+	})
 	@PostMapping("/changePassword")
 	public ServerResponse showChangePasswordPage(@RequestParam("id") Long id, //
 			@RequestParam("token") String token, //
