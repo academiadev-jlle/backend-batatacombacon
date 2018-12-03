@@ -89,7 +89,7 @@ public class UserEndpoint {
 		verificaAutorizado(idUser);
 		return mapper.toDTO(service.findById(idUser));
 	}
-	
+
 	@ApiOperation(value = "Retorna o Usuário que está logado")
 	@GetMapping("/whoami")
 	public ResponseUserDTO whoami() {
@@ -135,9 +135,8 @@ public class UserEndpoint {
 
 	@ApiOperation(value = "Recebe a nova senha com o token e id para validação")
 	@ApiResponses({ //
-		@ApiResponse(code = 200, message = "Senha alterada com Sucesso"), //
-		@ApiResponse(code = 401, message = "Token inválido")
-	})
+			@ApiResponse(code = 200, message = "Senha alterada com Sucesso"), //
+			@ApiResponse(code = 401, message = "Token inválido") })
 	@PostMapping("/changePassword")
 	public ServerResponse showChangePasswordPage(@RequestParam("id") Long id, //
 			@RequestParam("token") String token, //
@@ -165,9 +164,11 @@ public class UserEndpoint {
 	}
 
 	private SimpleMailMessage constructResetTokenEmail(String contextPath, Locale locale, String token, User user) {
-		String url = contextPath + "/user/changePassword?id=" + user.getId() + "&token=" + token;
-		String message = "Instruções para resetar sua senha";
-		return constructEmail("Reset Password", message + " \r\n" + url, user);
+		String url = "https://frontendcombacon.herokuapp.com/novasenha?id=" + user.getId() + "&token=" + token;
+		String message = "Você está recebendo este email pois solicitou a recuperação do acesso a sua conta PetCodes,"
+				+ " caso não tenha sido você, por favor ignore este email. \r\n Caso você tenha solicitado, basta"
+				+ "acessar o link abaixo.";
+		return constructEmail("Processo de recuperação de acesso PetCodes", message + " \r\n" + url, user);
 	}
 
 	private SimpleMailMessage constructEmail(String subject, String body, User user) {
@@ -175,7 +176,7 @@ public class UserEndpoint {
 		email.setSubject(subject);
 		email.setText(body);
 		email.setTo(user.getEmail());
-		email.setFrom("batatacombacon@petcodes.com.br");
+		email.setFrom("petcodes.batatacombacon@gmail.com.br");
 		return email;
 	}
 
