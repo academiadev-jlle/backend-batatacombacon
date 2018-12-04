@@ -3,7 +3,6 @@ package br.com.academiadev.BatataComBaconSpring.model;
 import java.time.LocalDateTime;
 
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.OneToOne;
 
 import lombok.Data;
@@ -20,7 +19,7 @@ public class PasswordResetToken extends AbstractEntity<Long> {
 	
 	private String token;
 	
-	@OneToOne(targetEntity = User.class, fetch = FetchType.EAGER)
+	@OneToOne
 	private User usuario;
 	
 	private LocalDateTime dataExpira = LocalDateTime.now().plusMinutes(Expiration);
