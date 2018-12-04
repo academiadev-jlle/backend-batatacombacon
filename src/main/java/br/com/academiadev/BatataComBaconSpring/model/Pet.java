@@ -63,5 +63,5 @@ public class Pet extends AuditEntity<Long> {
 	private ArrayList<Long> fotos;
 	
 	@ManyToOne(optional = false)
-	private User usuario;
+	private Usuario usuario;
 }

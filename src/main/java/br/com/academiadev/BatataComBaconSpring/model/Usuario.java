@@ -25,7 +25,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Entity
 @EntityListeners(AuditingEntityListener.class)
-public class User extends AuditEntity<Long> implements UserDetails {
+public class Usuario extends AuditEntity<Long> implements UserDetails {
 
 	/**
 	 * 
@@ -46,7 +46,7 @@ public class User extends AuditEntity<Long> implements UserDetails {
 
 	private String role = "ROLE_USER";
 
-	public User(Long id) {
+	public Usuario(Long id) {
 		this.id = id;
 	}
 
