@@ -22,7 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import br.com.academiadev.BatataComBaconSpring.config.ExceptionResponse;
 import br.com.academiadev.BatataComBaconSpring.dto.post.PostPetDTO;
-import br.com.academiadev.BatataComBaconSpring.dto.request.RequestPetDTO;
+import br.com.academiadev.BatataComBaconSpring.dto.request.ResponsePetDTO;
 import br.com.academiadev.BatataComBaconSpring.enums.Especie;
 import br.com.academiadev.BatataComBaconSpring.enums.Objetivo;
 import br.com.academiadev.BatataComBaconSpring.enums.Porte;
@@ -60,7 +60,7 @@ public class PetEndpoint {
 	})
 	@ResponseStatus(code = HttpStatus.CREATED)
 	@PostMapping("pet")
-	public RequestPetDTO criaPet(@RequestBody @Valid PostPetDTO dto) {
+	public ResponsePetDTO criaPet(@RequestBody @Valid PostPetDTO dto) {
 		verificaAutorizado(dto.getIdUsuario());
 		User usuario = userService.findById(dto.getIdUsuario());
 		Pet pet = mapper.toPet(dto);
@@ -97,7 +97,7 @@ public class PetEndpoint {
 			@ApiResponse(code = 200, message = "Lista retornada com sucesso!") //
 	})
 	@GetMapping("pet")
-	public Page<RequestPetDTO> listaPets( //
+	public Page<ResponsePetDTO> listaPets( //
 			@RequestParam(required = false, defaultValue = "0") Integer page, //
 			@RequestParam(required = false, defaultValue = "20") Integer size, //
 			@RequestParam(required = false) Especie especie, //
@@ -115,7 +115,7 @@ public class PetEndpoint {
 			@ApiResponse(code = 200, message = "Lista retornada com sucesso") //
 	})
 	@GetMapping("user/{idUser}/pet")
-	public Page<RequestPetDTO> listaPetsDeUsuario(@PathVariable("idUser") Long idUser,
+	public Page<ResponsePetDTO> listaPetsDeUsuario(@PathVariable("idUser") Long idUser,
 			@RequestParam(required = false, defaultValue = "0") Integer page,
 			@RequestParam(required = false, defaultValue = "20") Integer size,
 			@RequestParam(required = false) Especie especie, //
@@ -135,7 +135,7 @@ public class PetEndpoint {
 			@ApiResponse(code = 200, message = "Pet encontrado com sucesso") //
 	})
 	@GetMapping("pet/{idPet}")
-	public RequestPetDTO buscarPet(@PathVariable("idPet") Long idPet) {
+	public ResponsePetDTO buscarPet(@PathVariable("idPet") Long idPet) {
 		return mapper.toDTO(petService.findById(idPet));
 	}
 
