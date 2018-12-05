@@ -62,7 +62,6 @@ public class Pet extends AuditEntity<Long> {
 	//Um ArrayList para armazenar os IDs das fotos
 	private ArrayList<Long> fotos;
 	
-	@NotNull
-	@ManyToOne
-	private User usuario;
+	@ManyToOne(optional = false)
+	private Usuario usuario;
 }
