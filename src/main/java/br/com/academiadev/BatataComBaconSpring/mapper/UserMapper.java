@@ -18,6 +18,7 @@ public interface UserMapper {
 			@Mapping(target = "createdAt", ignore = true), //
 			@Mapping(target = "updatedAt", ignore = true), //
 			@Mapping(target = "role", ignore = true), //
+			@Mapping(target = "authorities", ignore = true), //
 	})
 	User toUser(PostUserDTO dto);
 
