@@ -13,7 +13,8 @@ public class ResourceConfig extends ResourceServerConfigurerAdapter {
 	@Override
 	public void configure(HttpSecurity http) throws Exception {
 		http.cors().and().authorizeRequests() //
-		.antMatchers(HttpMethod.POST, "/user").permitAll()
+		.antMatchers(HttpMethod.POST, "/user", "/user/resetPassword", "/user/changePassword").permitAll()
+        .antMatchers("/user/updatePassword*", "/user/savePassword*", "/updatePassword*").hasAuthority("CHANGE_PASSWORD_PRIVILEGE")
 		.antMatchers(HttpMethod.OPTIONS, "/oauth/token").permitAll()
 		.antMatchers(HttpMethod.GET, "/pet/**", "/especies", "/objetivos", "/porte", "/sexo", "/images/*", "/images").permitAll()
 		.antMatchers(HttpMethod.GET, "/user").hasRole("ADMIN")

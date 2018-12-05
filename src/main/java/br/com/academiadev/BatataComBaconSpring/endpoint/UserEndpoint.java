@@ -1,5 +1,11 @@
 package br.com.academiadev.BatataComBaconSpring.endpoint;
 
+import java.time.LocalDateTime;
+import java.util.Arrays;
+import java.util.Locale;
+import java.util.UUID;
+
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,7 +13,12 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,12 +31,15 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import br.com.academiadev.BatataComBaconSpring.config.ExceptionResponse;
+import br.com.academiadev.BatataComBaconSpring.config.ServerResponse;
+import br.com.academiadev.BatataComBaconSpring.dto.post.PasswordDTO;
 import br.com.academiadev.BatataComBaconSpring.dto.post.PostUserDTO;
 import br.com.academiadev.BatataComBaconSpring.dto.request.ResponseUserDTO;
 import br.com.academiadev.BatataComBaconSpring.exception.OperacaoNaoSuportadaException;
 import br.com.academiadev.BatataComBaconSpring.mapper.UserMapper;
+import br.com.academiadev.BatataComBaconSpring.model.PasswordResetToken;
 import br.com.academiadev.BatataComBaconSpring.model.User;
+import br.com.academiadev.BatataComBaconSpring.repository.PasswordTokenRepository;
 import br.com.academiadev.BatataComBaconSpring.service.UserService;
 import br.com.academiadev.BatataComBaconSpring.service.Utils;
 import io.swagger.annotations.Api;
@@ -43,6 +57,12 @@ public class UserEndpoint {
 
 	@Autowired
 	private UserMapper mapper;
+
+	@Autowired
+	private JavaMailSender mailSender;
+
+	@Autowired
+	private PasswordTokenRepository tokenRepository;
 
 	@ApiOperation(value = "Cria um usuario")
 	@ApiResponses(value = { @ApiResponse(code = 201, message = "Usuario criado com sucesso") })
@@ -87,10 +107,37 @@ public class UserEndpoint {
 	@ApiOperation(value = "Deletar um usuário")
 	@ApiResponses(value = { @ApiResponse(code = 201, message = "Usuário deletado com sucesso") })
 	@DeleteMapping("/{idUser}")
-	public ExceptionResponse deleteById(@PathVariable("idUser") Long idUser) {
+	public ServerResponse deleteById(@PathVariable("idUser") Long idUser) {
 		verificaAutorizado(idUser);
 		service.deleteById(idUser);
-		return new ExceptionResponse(HttpStatus.OK, "Usuário excluído com sucesso");
+		return new ServerResponse(HttpStatus.OK, "Usuário excluído com sucesso");
+	}
+
+	@ApiOperation(value = "Envia um email de reset de senha ao Usuário")
+	@ApiResponses({ //
+			@ApiResponse(code = 200, message = "Um email contendo as instruções foi enviado para a sua conta"), //
+			@ApiResponse(code = 404, message = "Este email não possui uma conta vinculada") })
+	@ResponseStatus(code = HttpStatus.OK)
+	@PostMapping("/resetPassword")
+	public ServerResponse resetaSenha(HttpServletRequest request, @RequestParam("email") String email) {
+		User usuario = service.findByEmail(email);
+		String token = UUID.randomUUID().toString();
+		service.createPasswordResetTokenForUser(usuario, token);
+		mailSender.send(constructResetTokenEmail(getAppUrl(request), request.getLocale(), token, usuario));
+		return new ServerResponse(HttpStatus.OK, "Um email contendo as instruções foi enviado para a sua conta");
+	}
+
+	@PostMapping("/changePassword")
+	public ServerResponse showChangePasswordPage(@RequestParam("id") Long id, //
+			@RequestParam("token") String token, //
+			@RequestBody @Valid PasswordDTO password) {
+		String result = validatePasswordResetToken(id, token);
+		if (result != null) {
+			return new ServerResponse(HttpStatus.UNAUTHORIZED, "Token inválido");
+		}
+		User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		service.changeUserPassword(user, password.getSenha());
+		return new ServerResponse(HttpStatus.OK, "Senha alterada com Sucesso");
 	}
 
 	private void verificaAutorizado(Long idUser) {
@@ -104,5 +151,41 @@ public class UserEndpoint {
 						.anyMatch(r -> r.getAuthority().equals("ROLE_ADMIN")))) {
 			throw new OperacaoNaoSuportadaException("Ação não autorizada");
 		}
+	}
+
+	private SimpleMailMessage constructResetTokenEmail(String contextPath, Locale locale, String token, User user) {
+		String url = contextPath + "/user/changePassword?id=" + user.getId() + "&token=" + token;
+		String message = "Instruções para resetar sua senha";
+		return constructEmail("Reset Password", message + " \r\n" + url, user);
+	}
+
+	private SimpleMailMessage constructEmail(String subject, String body, User user) {
+		SimpleMailMessage email = new SimpleMailMessage();
+		email.setSubject(subject);
+		email.setText(body);
+		email.setTo(user.getEmail());
+		email.setFrom("batatacombacon@petcodes.com.br");
+		return email;
+	}
+
+	private String getAppUrl(HttpServletRequest request) {
+		return "http://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath();
+	}
+
+	public String validatePasswordResetToken(long id, String token) {
+		PasswordResetToken passToken = tokenRepository.findByToken(token);
+		if ((passToken == null) || (passToken.getUsuario().getId() != id)) {
+			return "invalidToken";
+		}
+
+		if (passToken.getDataExpira().isBefore(LocalDateTime.now())) {
+			return "expired";
+		}
+
+		User user = passToken.getUsuario();
+		Authentication auth = new UsernamePasswordAuthenticationToken(user, null,
+				Arrays.asList(new SimpleGrantedAuthority("CHANGE_PASSWORD_PRIVILEGE")));
+		SecurityContextHolder.getContext().setAuthentication(auth);
+		return null;
 	}
 }
