@@ -59,9 +59,8 @@ public class Pet extends AuditEntity<Long> {
 	private Objetivo objetivo;
 
 	@NotNull
-	@OneToOne(fetch = FetchType.LAZY, //
-			cascade = CascadeType.ALL, //
-			mappedBy = "pet")
+	@OneToOne( //
+			cascade = CascadeType.ALL)
 	private Localizacao localPet;
 
 	// Um ArrayList para armazenar os IDs das fotos
