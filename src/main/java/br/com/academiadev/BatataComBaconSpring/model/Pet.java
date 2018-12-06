@@ -1,13 +1,15 @@
 package br.com.academiadev.BatataComBaconSpring.model;
 
-
 import java.util.ArrayList;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -36,14 +38,14 @@ public class Pet extends AuditEntity<Long> {
 	@NotBlank
 	@Size(min = 3, max = 30)
 	private String nome;
-	
+
 	@NotNull
 	private String descricao;
 
 	@NotNull
 	@Enumerated(EnumType.STRING)
 	private Sexo sexo;
-	
+
 	@NotNull
 	@Enumerated(EnumType.STRING)
 	private Porte porte;
@@ -56,12 +58,15 @@ public class Pet extends AuditEntity<Long> {
 	@Enumerated(EnumType.STRING)
 	private Objetivo objetivo;
 
-	@NotBlank
-	private String localPet;
-	
-	//Um ArrayList para armazenar os IDs das fotos
+	@NotNull
+	@OneToOne(fetch = FetchType.LAZY, //
+			cascade = CascadeType.ALL, //
+			mappedBy = "pet")
+	private Localizacao localPet;
+
+	// Um ArrayList para armazenar os IDs das fotos
 	private ArrayList<Long> fotos;
-	
+
 	@ManyToOne(optional = false)
 	private Usuario usuario;
 }
