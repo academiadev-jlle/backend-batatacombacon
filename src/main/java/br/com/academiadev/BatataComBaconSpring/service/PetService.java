@@ -66,8 +66,4 @@ public class PetService {
 	public void deleteById(Long idPet) {
 		repository.delete(findById(idPet));
 	}
-
-	public void flush() {
-		repository.flush();
-	}
 }
