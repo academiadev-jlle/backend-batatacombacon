@@ -79,13 +79,13 @@ public class PetEndpoint {
 			@ApiResponse(code = 404, message = "Pet não encontrado") //
 	})
 	@PutMapping("pet/{idPet}")
-	public Pet alteraPet(@RequestBody @Valid PostPetDTO dto, @RequestParam("idPet") Long idPet) {
+	public ResponsePetDTO alteraPet(@RequestBody @Valid PostPetDTO dto, @RequestParam("idPet") Long idPet) {
 		verificaAutorizado(dto.getIdUsuario());
 		Usuario usuario = userService.findById(dto.getIdUsuario());
 		Pet pet = mapper.toPet(dto);
 		pet.setId(idPet);
 		pet.setUsuario(usuario);
-		return petService.alteraPet(pet);
+		return mapper.toDTO(petService.alteraPet(pet));
 	}
 
 	/*
