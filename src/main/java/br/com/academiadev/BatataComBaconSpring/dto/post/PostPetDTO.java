@@ -51,6 +51,7 @@ public class PostPetDTO {
 	private Objetivo objetivo;
 	
 	@ApiModelProperty(name = "Local onde o Pet foi encontrado / perdido / acolhido")
+	@NotNull
 	private Localizacao localPet;
 	
 	@ApiModelProperty(example = "[]", name = "IDs das imagens do Pet" )
