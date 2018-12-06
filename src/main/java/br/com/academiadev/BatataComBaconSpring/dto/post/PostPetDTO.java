@@ -13,6 +13,7 @@ import br.com.academiadev.BatataComBaconSpring.enums.Especie;
 import br.com.academiadev.BatataComBaconSpring.enums.Objetivo;
 import br.com.academiadev.BatataComBaconSpring.enums.Porte;
 import br.com.academiadev.BatataComBaconSpring.enums.Sexo;
+import br.com.academiadev.BatataComBaconSpring.model.Localizacao;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -49,9 +50,8 @@ public class PostPetDTO {
 	@ApiModelProperty(example = "DOACAO", name = "Objetivo do cadastro deste Pet")
 	private Objetivo objetivo;
 	
-	@NotBlank
-	@ApiModelProperty(example = "Morro da vó Salvelina", name = "Local onde o Pet foi encontrado / perdido / acolhido")
-	private String localPet;
+	@ApiModelProperty(name = "Local onde o Pet foi encontrado / perdido / acolhido")
+	private Localizacao localPet;
 	
 	@ApiModelProperty(example = "[]", name = "IDs das imagens do Pet" )
 	private ArrayList<Long> fotos;
