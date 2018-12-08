@@ -5,7 +5,7 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public enum Objetivo {
+public enum Objetivo implements EnumInterface {
 
 	PERDIDO("Perdido"), ENCONTRADO("Encontrado"), DOACAO("Doação");
 

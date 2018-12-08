@@ -8,8 +8,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -21,9 +21,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import br.com.academiadev.BatataComBaconSpring.config.ExceptionResponse;
+import br.com.academiadev.BatataComBaconSpring.config.ServerResponse;
 import br.com.academiadev.BatataComBaconSpring.dto.post.PostPetDTO;
-import br.com.academiadev.BatataComBaconSpring.dto.request.RequestPetDTO;
+import br.com.academiadev.BatataComBaconSpring.dto.request.ResponsePetDTO;
 import br.com.academiadev.BatataComBaconSpring.enums.Especie;
 import br.com.academiadev.BatataComBaconSpring.enums.Objetivo;
 import br.com.academiadev.BatataComBaconSpring.enums.Porte;
@@ -43,7 +43,6 @@ import io.swagger.annotations.ApiResponses;
 @RestController
 @RequestMapping("/")
 @Api("Endpoint de Pet")
-@CrossOrigin
 public class PetEndpoint {
 
 	@Autowired
@@ -62,7 +61,7 @@ public class PetEndpoint {
 	})
 	@ResponseStatus(code = HttpStatus.CREATED)
 	@PostMapping("pet")
-	public RequestPetDTO criaPet(@RequestBody @Valid PostPetDTO dto) {
+	public ResponsePetDTO criaPet(@RequestBody @Valid PostPetDTO dto) {
 		verificaAutorizado(dto.getIdUsuario());
 		User usuario = userService.findById(dto.getIdUsuario());
 		Pet pet = mapper.toPet(dto);
@@ -81,13 +80,13 @@ public class PetEndpoint {
 			@ApiResponse(code = 404, message = "Pet não encontrado") //
 	})
 	@PutMapping("pet/{idPet}")
-	public Pet alteraPet(@RequestBody @Valid PostPetDTO dto, @RequestParam("idPet") Long idPet) {
+	public ResponsePetDTO alteraPet(@RequestBody @Valid PostPetDTO dto, @RequestParam("idPet") Long idPet) {
 		verificaAutorizado(dto.getIdUsuario());
 		User usuario = userService.findById(dto.getIdUsuario());
 		Pet pet = mapper.toPet(dto);
 		pet.setId(idPet);
 		pet.setUsuario(usuario);
-		return petService.alteraPet(pet);
+		return mapper.toDTO(petService.alteraPet(pet));
 	}
 
 	/*
@@ -99,7 +98,7 @@ public class PetEndpoint {
 			@ApiResponse(code = 200, message = "Lista retornada com sucesso!") //
 	})
 	@GetMapping("pet")
-	public Page<RequestPetDTO> listaPets( //
+	public Page<ResponsePetDTO> listaPets( //
 			@RequestParam(required = false, defaultValue = "0") Integer page, //
 			@RequestParam(required = false, defaultValue = "20") Integer size, //
 			@RequestParam(required = false) Especie especie, //
@@ -117,7 +116,7 @@ public class PetEndpoint {
 			@ApiResponse(code = 200, message = "Lista retornada com sucesso") //
 	})
 	@GetMapping("user/{idUser}/pet")
-	public Page<RequestPetDTO> listaPetsDeUsuario(@PathVariable("idUser") Long idUser,
+	public Page<ResponsePetDTO> listaPetsDeUsuario(@PathVariable("idUser") Long idUser,
 			@RequestParam(required = false, defaultValue = "0") Integer page,
 			@RequestParam(required = false, defaultValue = "20") Integer size,
 			@RequestParam(required = false) Especie especie, //
@@ -137,7 +136,7 @@ public class PetEndpoint {
 			@ApiResponse(code = 200, message = "Pet encontrado com sucesso") //
 	})
 	@GetMapping("pet/{idPet}")
-	public RequestPetDTO buscarPet(@PathVariable("idPet") Long idPet) {
+	public ResponsePetDTO buscarPet(@PathVariable("idPet") Long idPet) {
 		return mapper.toDTO(petService.findById(idPet));
 	}
 
@@ -146,21 +145,22 @@ public class PetEndpoint {
 			@ApiResponse(code = 200, message = "Pet excluido com sucesso") //
 	})
 	@DeleteMapping("pet/{idPet}")
-	public ExceptionResponse deletarPet(@PathVariable("idPet") Long idPet) {
+	public ServerResponse deletarPet(@PathVariable("idPet") Long idPet) {
 		verificaAutorizado(petService.findById(idPet).getUsuario().getId());
 		petService.deleteById(idPet);
-		return new ExceptionResponse(HttpStatus.OK, "Pet excluído com sucesso");
+		return new ServerResponse(HttpStatus.OK, "Pet excluído com sucesso");
 	}
-	
+
 	private void verificaAutorizado(Long idUser) {
 		/*
 		 * Confere se é o mesmo usuário ou se é ADMIN. Caso não seja nenhum dos 2 ,
 		 * retorna OperacaoNaoSuportadaException.
 		 */
 		User user = userService.findById(idUser);
-		if (!(SecurityContextHolder.getContext().getAuthentication().getName().equals(user.getEmail())
-				| SecurityContextHolder.getContext().getAuthentication().getAuthorities().stream()
-						.anyMatch(r -> r.getAuthority().equals("ROLE_ADMIN")))) {
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		boolean isSameUser = authentication.getName().equals(user.getEmail());
+		boolean isAdmin = authentication.getAuthorities().stream().anyMatch(r -> r.getAuthority().equals("ROLE_ADMIN"));
+		if (!isSameUser || !isAdmin) {
 			throw new OperacaoNaoSuportadaException("Ação não autorizada");
 		}
 	}

@@ -2,6 +2,7 @@ package br.com.academiadev.BatataComBaconSpring.service;
 
 import java.util.ArrayList;
 
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
@@ -20,8 +21,8 @@ public class PetService {
 	private PetRepository repository;
 
 	/*
-	 * Inicializando ArrayList de fotos do pet recém criado caso seja nulo pra evitar
-	 * NullPointerException
+	 * Inicializando ArrayList de fotos do pet recém criado caso seja nulo pra
+	 * evitar NullPointerException
 	 */
 	public Pet save(Pet pet) {
 		if (pet.getFotos() == null) {
@@ -39,19 +40,20 @@ public class PetService {
 	public Pet alteraPet(Pet petModificado) {
 		Pet pet = repository.findById(petModificado.getId())
 				.orElseThrow(() -> new PetNaoEncontradoException("Pet não encontrado"));
-		if (petModificado.getUsuario().getId().equals(pet.getUsuario().getId())) {
-			pet.setNome(petModificado.getNome());
-			pet.setEspecie(petModificado.getEspecie());
-			pet.setLocalPet(petModificado.getLocalPet());
-			pet.setObjetivo(petModificado.getObjetivo());
-			pet.setPorte(petModificado.getPorte());
-			pet.setSexo(petModificado.getSexo());
-			pet.setFotos(petModificado.getFotos());
-			repository.flush();
-			return pet;
-		} else {
+		if (!petModificado.getUsuario().getId().equals(pet.getUsuario().getId())) {
 			throw new OperacaoNaoSuportadaException("Este pet não é seu!");
 		}
+		petModificado.getLocalPet().setId(pet.getLocalPet().getId());
+		BeanUtils.copyProperties(petModificado, pet);
+//		pet.setNome(petModificado.getNome());
+//		pet.setDescricao(petModificado.getDescricao());
+//		pet.setEspecie(petModificado.getEspecie());
+//		pet.setLocalPet(petModificado.getLocalPet());
+//		pet.setObjetivo(petModificado.getObjetivo());
+//		pet.setPorte(petModificado.getPorte());
+//		pet.setSexo(petModificado.getSexo());
+//		pet.setFotos(petModificado.getFotos());
+		return repository.save(pet);
 	}
 
 	public Page<Pet> findAll(Example<Pet> pet, Pageable pageable) {
@@ -64,9 +66,5 @@ public class PetService {
 
 	public void deleteById(Long idPet) {
 		repository.delete(findById(idPet));
-	}
-
-	public void flush() {
-		repository.flush();
 	}
 }
