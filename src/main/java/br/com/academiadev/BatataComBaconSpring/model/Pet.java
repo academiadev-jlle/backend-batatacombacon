@@ -1,6 +1,6 @@
 package br.com.academiadev.BatataComBaconSpring.model;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -62,9 +62,9 @@ public class Pet extends AuditEntity<Long> {
 			cascade = CascadeType.ALL)
 	private Localizacao localPet;
 
-	// Um ArrayList para armazenar os IDs das fotos
-	private ArrayList<Long> fotos;
+	// Um List para armazenar os IDs das fotos
+	private List<Long> fotos;
 
 	@ManyToOne(optional = false)
-	private Usuario usuario;
+	private User usuario;
 }
