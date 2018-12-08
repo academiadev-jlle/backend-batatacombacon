@@ -18,6 +18,7 @@ import br.com.academiadev.BatataComBaconSpring.dto.request.ResponseFileDTO;
 import br.com.academiadev.BatataComBaconSpring.exception.ImagemNaoEncontradaException;
 import br.com.academiadev.BatataComBaconSpring.mapper.FileMapper;
 import br.com.academiadev.BatataComBaconSpring.model.File;
+import br.com.academiadev.BatataComBaconSpring.model.Pet;
 import br.com.academiadev.BatataComBaconSpring.repository.FileRepository;
 import br.com.academiadev.BatataComBaconSpring.service.PetService;
 import io.swagger.annotations.Api;
@@ -59,8 +60,9 @@ public class FileEndpoint {
 	public ResponseFileDTO uploadPetImage(@PathVariable("idPet") Long idPet, @RequestParam MultipartFile imagem) throws IOException {
 		File file = new File(imagem.getOriginalFilename(), imagem.getContentType(), imagem.getBytes());
 		file = fileRepository.save(file);
-		petService.findById(idPet).getFotos().add(file.getId());
-		petService.flush();
+		Pet pet = petService.findById(idPet); 
+		pet.getFotos().add(file.getId());
+		petService.save(pet);
 		return mapper.toDTO(file);
 	}
 

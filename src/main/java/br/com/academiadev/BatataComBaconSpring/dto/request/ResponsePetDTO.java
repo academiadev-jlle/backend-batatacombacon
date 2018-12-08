@@ -6,6 +6,7 @@ import br.com.academiadev.BatataComBaconSpring.enums.Especie;
 import br.com.academiadev.BatataComBaconSpring.enums.Objetivo;
 import br.com.academiadev.BatataComBaconSpring.enums.Porte;
 import br.com.academiadev.BatataComBaconSpring.enums.Sexo;
+import br.com.academiadev.BatataComBaconSpring.model.Localizacao;
 import lombok.Data;
 
 @Data
@@ -25,7 +26,7 @@ public class ResponsePetDTO {
 
 	private Objetivo objetivo;
 	
-	private String localPet;
+	private Localizacao localPet;
 	
 	private ArrayList<Long> fotos;
 	
