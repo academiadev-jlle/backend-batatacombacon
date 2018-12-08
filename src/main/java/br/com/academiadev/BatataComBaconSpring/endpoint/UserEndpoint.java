@@ -72,7 +72,7 @@ public class UserEndpoint {
 		return mapper.toDTO(service.save(mapper.toUser(dto)));
 	}
 
-	@PreAuthorize("hasRole('ADMIN')")
+	//Esta interface está especificada para acesso somente aos ADMINS
 	@ApiOperation(value = "Retorna a lista de usuarios")
 	@ApiResponses(value = { @ApiResponse(code = 200, message = "Lista retornada com sucesso") })
 	@GetMapping
