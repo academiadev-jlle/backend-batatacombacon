@@ -20,11 +20,11 @@ public class PasswordResetToken extends AbstractEntity<Long> {
 	private String token;
 	
 	@OneToOne
-	private User usuario;
+	private Usuario usuario;
 	
 	private LocalDateTime dataExpira = LocalDateTime.now().plusMinutes(Expiration);
 
-	public PasswordResetToken(String token, User usuario) {
+	public PasswordResetToken(String token, Usuario usuario) {
 		this.token = token;
 		this.usuario = usuario;
 	}

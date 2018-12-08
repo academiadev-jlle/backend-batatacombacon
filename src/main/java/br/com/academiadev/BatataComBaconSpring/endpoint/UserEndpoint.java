@@ -37,7 +37,7 @@ import br.com.academiadev.BatataComBaconSpring.dto.request.ResponseUserDTO;
 import br.com.academiadev.BatataComBaconSpring.exception.OperacaoNaoSuportadaException;
 import br.com.academiadev.BatataComBaconSpring.mapper.UserMapper;
 import br.com.academiadev.BatataComBaconSpring.model.PasswordResetToken;
-import br.com.academiadev.BatataComBaconSpring.model.User;
+import br.com.academiadev.BatataComBaconSpring.model.Usuario;
 import br.com.academiadev.BatataComBaconSpring.repository.PasswordTokenRepository;
 import br.com.academiadev.BatataComBaconSpring.service.UserService;
 import br.com.academiadev.BatataComBaconSpring.service.Utils;
@@ -71,7 +71,7 @@ public class UserEndpoint {
 		return mapper.toDTO(service.save(mapper.toUser(dto)));
 	}
 
-	//Esta interface está especificada para acesso somente aos ADMINS
+	// Esta interface está especificada para acesso somente aos ADMINS
 	@ApiOperation(value = "Retorna a lista de usuarios")
 	@ApiResponses(value = { @ApiResponse(code = 200, message = "Lista retornada com sucesso") })
 	@GetMapping
@@ -104,7 +104,7 @@ public class UserEndpoint {
 			@RequestParam("idUser") Long idUser) {
 
 		verificaAutorizado(idUser);
-		User usuarioMod = mapper.toUser(dto);
+		Usuario usuarioMod = mapper.toUser(dto);
 		usuarioMod.setId(idUser);
 		return mapper.toDTO(service.alteraUser(usuarioMod));
 	}
@@ -125,7 +125,7 @@ public class UserEndpoint {
 	@ResponseStatus(code = HttpStatus.OK)
 	@PostMapping("/resetPassword")
 	public ServerResponse resetaSenha(HttpServletRequest request, @RequestParam("email") String email) {
-		User usuario = service.findByEmail(email);
+		Usuario usuario = service.findByEmail(email);
 		String token = UUID.randomUUID().toString();
 		service.createPasswordResetTokenForUser(usuario, token);
 		mailSender.send(constructResetTokenEmail(getAppUrl(request), request.getLocale(), token, usuario));
@@ -144,7 +144,7 @@ public class UserEndpoint {
 		if (result != null) {
 			return new ServerResponse(HttpStatus.UNAUTHORIZED, "Token inválido");
 		}
-		User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		Usuario user = (Usuario) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		service.changeUserPassword(user, password.getSenha());
 		return new ServerResponse(HttpStatus.OK, "Senha alterada com Sucesso");
 	}
@@ -154,15 +154,16 @@ public class UserEndpoint {
 		 * Confere se é o mesmo usuário ou se é ADMIN. Caso não seja nenhum dos 2 ,
 		 * retorna OperacaoNaoSuportadaException.
 		 */
-		User user = service.findById(idUser);
-		if (!(SecurityContextHolder.getContext().getAuthentication().getName().equals(user.getEmail())
-				| SecurityContextHolder.getContext().getAuthentication().getAuthorities().stream()
-						.anyMatch(r -> r.getAuthority().equals("ROLE_ADMIN")))) {
+		Usuario user = service.findById(idUser);
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		boolean isSameUser = authentication.getName().equals(user.getEmail());
+		boolean isAdmin = authentication.getAuthorities().stream().anyMatch(r -> r.getAuthority().equals("ROLE_ADMIN"));
+		if (!(isSameUser || isAdmin)) {
 			throw new OperacaoNaoSuportadaException("Ação não autorizada");
 		}
 	}
 
-	private SimpleMailMessage constructResetTokenEmail(String contextPath, Locale locale, String token, User user) {
+	private SimpleMailMessage constructResetTokenEmail(String contextPath, Locale locale, String token, Usuario user) {
 		String url = "https://frontendcombacon.herokuapp.com/novasenha?id=" + user.getId() + "&token=" + token;
 		String message = "Você está recebendo este email pois solicitou a recuperação do acesso a sua conta PetCodes,"
 				+ " caso não tenha sido você, por favor ignore este email. \r\n Caso você tenha solicitado, basta"
@@ -170,7 +171,7 @@ public class UserEndpoint {
 		return constructEmail("Processo de recuperação de acesso PetCodes", message + " \r\n" + url, user);
 	}
 
-	private SimpleMailMessage constructEmail(String subject, String body, User user) {
+	private SimpleMailMessage constructEmail(String subject, String body, Usuario user) {
 		SimpleMailMessage email = new SimpleMailMessage();
 		email.setSubject(subject);
 		email.setText(body);
@@ -193,7 +194,7 @@ public class UserEndpoint {
 			return "expired";
 		}
 
-		User user = passToken.getUsuario();
+		Usuario user = passToken.getUsuario();
 		Authentication auth = new UsernamePasswordAuthenticationToken(user, null,
 				Arrays.asList(new SimpleGrantedAuthority("CHANGE_PASSWORD_PRIVILEGE")));
 		SecurityContextHolder.getContext().setAuthentication(auth);

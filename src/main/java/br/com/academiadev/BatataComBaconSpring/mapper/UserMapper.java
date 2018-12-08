@@ -8,7 +8,7 @@ import org.mapstruct.Mappings;
 
 import br.com.academiadev.BatataComBaconSpring.dto.post.PostUserDTO;
 import br.com.academiadev.BatataComBaconSpring.dto.request.ResponseUserDTO;
-import br.com.academiadev.BatataComBaconSpring.model.User;
+import br.com.academiadev.BatataComBaconSpring.model.Usuario;
 
 @Mapper(componentModel = "spring")
 public interface UserMapper {
@@ -20,15 +20,15 @@ public interface UserMapper {
 			@Mapping(target = "role", ignore = true), //
 			@Mapping(target = "authorities", ignore = true), //
 	})
-	User toUser(PostUserDTO dto);
+	Usuario toUser(PostUserDTO dto);
 
 	@Mappings({ //
 			@Mapping(target = "created_at", source = "createdAt", dateFormat = "dd/MM/yyyy HH:mm") //
 	})
-	ResponseUserDTO toDTO(User user);
+	ResponseUserDTO toDTO(Usuario user);
 
-	List<User> toUser(List<PostUserDTO> dtos);
+	List<Usuario> toUser(List<PostUserDTO> dtos);
 
-	List<ResponseUserDTO> toDTO(List<User> users);
+	List<ResponseUserDTO> toDTO(List<Usuario> users);
 
 }

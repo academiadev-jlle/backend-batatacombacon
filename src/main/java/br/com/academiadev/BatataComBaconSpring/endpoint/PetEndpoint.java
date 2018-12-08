@@ -31,7 +31,7 @@ import br.com.academiadev.BatataComBaconSpring.enums.Sexo;
 import br.com.academiadev.BatataComBaconSpring.exception.OperacaoNaoSuportadaException;
 import br.com.academiadev.BatataComBaconSpring.mapper.PetMapper;
 import br.com.academiadev.BatataComBaconSpring.model.Pet;
-import br.com.academiadev.BatataComBaconSpring.model.User;
+import br.com.academiadev.BatataComBaconSpring.model.Usuario;
 import br.com.academiadev.BatataComBaconSpring.service.PetService;
 import br.com.academiadev.BatataComBaconSpring.service.UserService;
 import br.com.academiadev.BatataComBaconSpring.service.Utils;
@@ -63,7 +63,7 @@ public class PetEndpoint {
 	@PostMapping("pet")
 	public ResponsePetDTO criaPet(@RequestBody @Valid PostPetDTO dto) {
 		verificaAutorizado(dto.getIdUsuario());
-		User usuario = userService.findById(dto.getIdUsuario());
+		Usuario usuario = userService.findById(dto.getIdUsuario());
 		Pet pet = mapper.toPet(dto);
 		pet.setUsuario(usuario);
 		return mapper.toDTO(petService.save(pet));
@@ -82,7 +82,7 @@ public class PetEndpoint {
 	@PutMapping("pet/{idPet}")
 	public ResponsePetDTO alteraPet(@RequestBody @Valid PostPetDTO dto, @RequestParam("idPet") Long idPet) {
 		verificaAutorizado(dto.getIdUsuario());
-		User usuario = userService.findById(dto.getIdUsuario());
+		Usuario usuario = userService.findById(dto.getIdUsuario());
 		Pet pet = mapper.toPet(dto);
 		pet.setId(idPet);
 		pet.setUsuario(usuario);
@@ -126,7 +126,7 @@ public class PetEndpoint {
 	) {
 		verificaAutorizado(idUser);
 		Pageable pageable = PageRequest.of(page, size);
-		User usuario = new User(idUser);
+		Usuario usuario = new Usuario(idUser);
 		Pet pet = Pet.builder().especie(especie).porte(porte).objetivo(objetivo).sexo(sexo).usuario(usuario).build();
 		return Utils.toPageDTO(petService.findAll(Example.of(pet), pageable), mapper::toDTO);
 	}
@@ -156,11 +156,11 @@ public class PetEndpoint {
 		 * Confere se é o mesmo usuário ou se é ADMIN. Caso não seja nenhum dos 2 ,
 		 * retorna OperacaoNaoSuportadaException.
 		 */
-		User user = userService.findById(idUser);
+		Usuario user = userService.findById(idUser);
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		boolean isSameUser = authentication.getName().equals(user.getEmail());
 		boolean isAdmin = authentication.getAuthorities().stream().anyMatch(r -> r.getAuthority().equals("ROLE_ADMIN"));
-		if (!isSameUser || !isAdmin) {
+		if (!(isSameUser || isAdmin)) {
 			throw new OperacaoNaoSuportadaException("Ação não autorizada");
 		}
 	}
