@@ -1,5 +1,6 @@
 package br.com.academiadev.BatataComBaconSpring.service;
 
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -28,11 +29,12 @@ public class UserService {
 	
 	public User alteraUser(User userModificado) {
 		User user = repository.findById(userModificado.getId()).orElseThrow(() -> new UserNaoEncontradoException("Usuário não encontrado"));
-		user.setNome(userModificado.getNome());
-		user.setEmail(userModificado.getEmail());
-		user.setSenha(new BCryptPasswordEncoder().encode(userModificado.getSenha()));
-		repository.flush();
-		return user;
+		BeanUtils.copyProperties(userModificado, user);
+//		user.setNome(userModificado.getNome());
+//		user.setEmail(userModificado.getEmail());
+//		user.setSenha(new BCryptPasswordEncoder().encode(userModificado.getSenha()));
+		return repository.save(user);
+		
 	}
 
 	public Page<User> findAll(Pageable pageable) {

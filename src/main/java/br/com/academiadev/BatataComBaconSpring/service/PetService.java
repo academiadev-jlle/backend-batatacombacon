@@ -2,6 +2,7 @@ package br.com.academiadev.BatataComBaconSpring.service;
 
 import java.util.ArrayList;
 
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
@@ -43,16 +44,16 @@ public class PetService {
 			throw new OperacaoNaoSuportadaException("Este pet não é seu!");
 		}
 		petModificado.getLocalPet().setId(pet.getLocalPet().getId());
-		pet.setNome(petModificado.getNome());
-		pet.setDescricao(petModificado.getDescricao());
-		pet.setEspecie(petModificado.getEspecie());
-		pet.setLocalPet(petModificado.getLocalPet());
-		pet.setObjetivo(petModificado.getObjetivo());
-		pet.setPorte(petModificado.getPorte());
-		pet.setSexo(petModificado.getSexo());
-		pet.setFotos(petModificado.getFotos());
-		repository.save(pet);
-		return pet;
+		BeanUtils.copyProperties(petModificado, pet);
+//		pet.setNome(petModificado.getNome());
+//		pet.setDescricao(petModificado.getDescricao());
+//		pet.setEspecie(petModificado.getEspecie());
+//		pet.setLocalPet(petModificado.getLocalPet());
+//		pet.setObjetivo(petModificado.getObjetivo());
+//		pet.setPorte(petModificado.getPorte());
+//		pet.setSexo(petModificado.getSexo());
+//		pet.setFotos(petModificado.getFotos());
+		return repository.save(pet);
 	}
 
 	public Page<Pet> findAll(Example<Pet> pet, Pageable pageable) {
