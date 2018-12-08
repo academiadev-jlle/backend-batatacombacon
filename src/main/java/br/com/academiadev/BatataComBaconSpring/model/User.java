@@ -23,9 +23,9 @@ import lombok.NoArgsConstructor;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @NoArgsConstructor
-@Entity
+@Entity(name = "Users") //Informando o nome da tabela pois "User" é reservado
 @EntityListeners(AuditingEntityListener.class)
-public class Usuario extends AuditEntity<Long> implements UserDetails {
+public class User extends AuditEntity<Long> implements UserDetails {
 
 	/**
 	 * 
@@ -46,7 +46,7 @@ public class Usuario extends AuditEntity<Long> implements UserDetails {
 
 	private String role = "ROLE_USER";
 
-	public Usuario(Long id) {
+	public User(Long id) {
 		this.id = id;
 	}
 
