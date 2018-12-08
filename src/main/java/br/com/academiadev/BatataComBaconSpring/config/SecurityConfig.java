@@ -13,7 +13,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableAuthorizationServer;
 
 import br.com.academiadev.BatataComBaconSpring.exception.UserNaoEncontradoException;
-import br.com.academiadev.BatataComBaconSpring.model.User;
+import br.com.academiadev.BatataComBaconSpring.model.Usuario;
 import br.com.academiadev.BatataComBaconSpring.repository.UserRepository;
 
 @Configuration
@@ -34,7 +34,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Autowired
 	public void configure(AuthenticationManagerBuilder auth, UserRepository repository) throws Exception {
-		User user = new User();
+		Usuario user = new Usuario();
 		user.setNome("Administrador do Sistema");
 		user.setEmail("admin@batatacombacon.com.br");
 		user.setSenha(new BCryptPasswordEncoder().encode("AdminComBacon"));
