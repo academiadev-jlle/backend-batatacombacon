@@ -71,7 +71,7 @@ public class UserEndpoint {
 		return mapper.toDTO(service.save(mapper.toUser(dto)));
 	}
 
-	//Esta interface está especificada para acesso somente aos ADMINS
+	// Esta interface está especificada para acesso somente aos ADMINS
 	@ApiOperation(value = "Retorna a lista de usuarios")
 	@ApiResponses(value = { @ApiResponse(code = 200, message = "Lista retornada com sucesso") })
 	@GetMapping
@@ -155,9 +155,10 @@ public class UserEndpoint {
 		 * retorna OperacaoNaoSuportadaException.
 		 */
 		User user = service.findById(idUser);
-		if (!(SecurityContextHolder.getContext().getAuthentication().getName().equals(user.getEmail())
-				| SecurityContextHolder.getContext().getAuthentication().getAuthorities().stream()
-						.anyMatch(r -> r.getAuthority().equals("ROLE_ADMIN")))) {
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		boolean isSameUser = authentication.getName().equals(user.getEmail());
+		boolean isAdmin = authentication.getAuthorities().stream().anyMatch(r -> r.getAuthority().equals("ROLE_ADMIN"));
+		if (!(isSameUser || isAdmin)) {
 			throw new OperacaoNaoSuportadaException("Ação não autorizada");
 		}
 	}
