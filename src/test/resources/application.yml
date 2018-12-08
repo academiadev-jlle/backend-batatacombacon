@@ -1,6 +1,0 @@
-security:
-  oauth2:
-    client:
-      scope: password
-      client-id: tokenAdmin
-      client-secret: TokenComBacon
