@@ -160,7 +160,7 @@ public class PetEndpoint {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		boolean isSameUser = authentication.getName().equals(user.getEmail());
 		boolean isAdmin = authentication.getAuthorities().stream().anyMatch(r -> r.getAuthority().equals("ROLE_ADMIN"));
-		if (!isSameUser || !isAdmin) {
+		if (!(isSameUser || isAdmin)) {
 			throw new OperacaoNaoSuportadaException("Ação não autorizada");
 		}
 	}
