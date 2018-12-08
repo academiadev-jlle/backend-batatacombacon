@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class EnumResponse {
 	
-	private String nome;
+	private String name;
 	
 	private String descricao;
 
