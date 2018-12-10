@@ -17,7 +17,7 @@ public class ResourceConfig extends ResourceServerConfigurerAdapter {
         .antMatchers("/user/updatePassword*", "/user/savePassword*", "/updatePassword*").hasAuthority("CHANGE_PASSWORD_PRIVILEGE")
 		.antMatchers(HttpMethod.OPTIONS, "/oauth/token").permitAll()
 		.antMatchers(HttpMethod.GET, "/pet/**", "/especies", "/objetivos", "/porte", "/sexo", "/images/*", "/images").permitAll()
-		.antMatchers(HttpMethod.GET, "/user").hasRole("ADMIN")
+		.antMatchers(HttpMethod.GET, "/user/", "/user").hasRole("ADMIN")
 		.anyRequest().authenticated();
 	}
 }
