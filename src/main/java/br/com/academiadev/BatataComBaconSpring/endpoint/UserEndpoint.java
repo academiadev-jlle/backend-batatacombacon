@@ -101,7 +101,7 @@ public class UserEndpoint {
 			@ApiResponse(code = 404, message = "Usuário não encontrado") })
 	@PutMapping("/{idUser}")
 	public ResponseUserDTO alteraUser(@RequestBody @Valid PostUserDTO dto, //
-			@PathVariable("idUser") Long idUser) {
+			@RequestParam("idUser") Long idUser) {
 
 		verificaAutorizado(idUser);
 		Usuario usuarioMod = mapper.toUser(dto);
