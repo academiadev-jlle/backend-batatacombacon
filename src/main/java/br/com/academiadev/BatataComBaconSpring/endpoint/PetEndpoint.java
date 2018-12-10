@@ -8,6 +8,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -149,16 +150,17 @@ public class PetEndpoint {
 		petService.deleteById(idPet);
 		return new ServerResponse(HttpStatus.OK, "Pet excluído com sucesso");
 	}
-	
+
 	private void verificaAutorizado(Long idUser) {
 		/*
 		 * Confere se é o mesmo usuário ou se é ADMIN. Caso não seja nenhum dos 2 ,
 		 * retorna OperacaoNaoSuportadaException.
 		 */
 		Usuario user = userService.findById(idUser);
-		if (!(SecurityContextHolder.getContext().getAuthentication().getName().equals(user.getEmail())
-				| SecurityContextHolder.getContext().getAuthentication().getAuthorities().stream()
-						.anyMatch(r -> r.getAuthority().equals("ROLE_ADMIN")))) {
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		boolean isSameUser = authentication.getName().equals(user.getEmail());
+		boolean isAdmin = authentication.getAuthorities().stream().anyMatch(r -> r.getAuthority().equals("ROLE_ADMIN"));
+		if (!(isSameUser || isAdmin)) {
 			throw new OperacaoNaoSuportadaException("Ação não autorizada");
 		}
 	}

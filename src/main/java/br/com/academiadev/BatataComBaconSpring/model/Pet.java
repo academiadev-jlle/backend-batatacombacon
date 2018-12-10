@@ -15,10 +15,10 @@ import javax.validation.constraints.Size;
 
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+import br.com.academiadev.BatataComBaconSpring.enums.Especie;
 import br.com.academiadev.BatataComBaconSpring.enums.Objetivo;
 import br.com.academiadev.BatataComBaconSpring.enums.Porte;
 import br.com.academiadev.BatataComBaconSpring.enums.Sexo;
-import br.com.academiadev.BatataComBaconSpring.enums.Especie;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -62,7 +62,7 @@ public class Pet extends AuditEntity<Long> {
 			cascade = CascadeType.ALL)
 	private Localizacao localPet;
 
-	// Um ArrayList para armazenar os IDs das fotos
+	// Um List para armazenar os IDs das fotos
 	private ArrayList<Long> fotos;
 
 	@ManyToOne(optional = false)
