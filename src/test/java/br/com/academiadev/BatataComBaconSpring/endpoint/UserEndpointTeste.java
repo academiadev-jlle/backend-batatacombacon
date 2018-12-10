@@ -147,7 +147,7 @@ public class UserEndpointTeste {
 				.header("Authorization", "Bearer " + token))//
 				.andExpect(status().isUnauthorized());
 	}
-	
+
 	@Test
 	@Transactional
 	public void getDetalhes_UsuarioInexistente() throws Exception {
@@ -217,7 +217,7 @@ public class UserEndpointTeste {
 		usuarioMod.setNome("Novo Nome");
 		usuarioMod.setSenha("Nova Senha");
 		usuarioMod.setEmail("novoemail@petcodes.com.br");
-		mvc.perform(put("/user/".concat(id.toString()))//
+		mvc.perform(put("/user/".concat(id.toString())).param("idUser", id.toString())//
 				.header("Authorization", "Bearer " + token)//
 				.contentType(MediaType.APPLICATION_JSON_UTF8_VALUE)//
 				.content(new ObjectMapper().writeValueAsString(usuarioMod)))//
@@ -235,13 +235,13 @@ public class UserEndpointTeste {
 		usuarioMod.setNome("Novo Nome");
 		usuarioMod.setSenha("Nova Senha");
 		usuarioMod.setEmail("novoemail@petcodes.com.br");
-		mvc.perform(put("/user/".concat("1"))//
+		mvc.perform(put("/user/".concat("1")).param("idUser", "1")//
 				.header("Authorization", "Bearer " + token)//
 				.contentType(MediaType.APPLICATION_JSON_UTF8_VALUE)//
 				.content(new ObjectMapper().writeValueAsString(usuarioMod)))//
 				.andExpect(status().isUnauthorized());
 	}
-	
+
 	@Test
 	@Transactional
 	public void alteraUsuario_Inexistente() throws Exception {
@@ -251,7 +251,7 @@ public class UserEndpointTeste {
 		usuarioMod.setNome("Novo Nome");
 		usuarioMod.setSenha("Nova Senha");
 		usuarioMod.setEmail("novoemail@petcodes.com.br");
-		mvc.perform(put("/user/".concat("99"))//
+		mvc.perform(put("/user/".concat("99")).param("idUser", "99")//
 				.header("Authorization", "Bearer " + token)//
 				.contentType(MediaType.APPLICATION_JSON_UTF8_VALUE)//
 				.content(new ObjectMapper().writeValueAsString(usuarioMod)))//
