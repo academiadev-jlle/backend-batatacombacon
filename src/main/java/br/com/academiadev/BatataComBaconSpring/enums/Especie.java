@@ -7,7 +7,7 @@ import lombok.Getter;
 @AllArgsConstructor
 public enum Especie implements EnumInterface{
 	
-	AVE("Ave"), EQUINO("Equino"), CANINO("Canino"), FELINO("Felino"), OUTRO("Outro");
+	AVE("Ave"), EQUINO("Equino"), CANINO("Canino"), FELINO("Felino"), PEIXE("Peixe"), OUTRO("Outro");
 	
 	private String descricao;
 }
