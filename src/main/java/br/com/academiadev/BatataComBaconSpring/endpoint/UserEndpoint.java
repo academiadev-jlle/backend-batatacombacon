@@ -164,7 +164,7 @@ public class UserEndpoint {
 	}
 
 	private SimpleMailMessage constructResetTokenEmail(String contextPath, Locale locale, String token, Usuario user) {
-		String url = "https://frontendcombacon.herokuapp.com/novasenha?id=" + user.getId() + "&token=" + token;
+		String url = "https://procurandopets.herokuapp.com/novasenha?id=" + user.getId() + "&token=" + token;
 		String message = "Você está recebendo este email pois solicitou a recuperação do acesso a sua conta PetCodes,"
 				+ " caso não tenha sido você, por favor ignore este email. \r\n Caso você tenha solicitado, basta"
 				+ "acessar o link abaixo.";
