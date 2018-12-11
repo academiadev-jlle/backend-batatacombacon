@@ -167,7 +167,7 @@ public class UserEndpoint {
 		String url = "https://procurandopets.herokuapp.com/novasenha?id=" + user.getId() + "&token=" + token;
 		String message = "Você está recebendo este email pois solicitou a recuperação do acesso a sua conta PetCodes,"
 				+ " caso não tenha sido você, por favor ignore este email. \r\n Caso você tenha solicitado, basta"
-				+ "acessar o link abaixo.";
+				+ " acessar o link abaixo.";
 		return constructEmail("Processo de recuperação de acesso PetCodes", message + " \r\n" + url, user);
 	}
 
