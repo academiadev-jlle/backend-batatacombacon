@@ -5,7 +5,7 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public enum Sexo {
+public enum Sexo implements EnumInterface {
 	MACHO("Macho"), FEMEA("Fêmea");
 
 	private String descricao;

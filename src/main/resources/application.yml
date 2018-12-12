@@ -1,0 +1,11 @@
+security:
+  oauth2:
+    client:
+      scope: password
+      client-id: tokenAdmin
+      client-secret: TokenComBacon
+spring:
+  datasource:
+    url: ${JDBC_DATABASE_URL}
+    username: ${JDBC_DATABASE_USERNAME}
+    password: ${JDBC_DATABASE_PASSWORD}

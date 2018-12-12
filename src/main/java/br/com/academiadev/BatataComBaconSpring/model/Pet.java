@@ -1,21 +1,24 @@
 package br.com.academiadev.BatataComBaconSpring.model;
 
+import java.util.ArrayList;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+import br.com.academiadev.BatataComBaconSpring.enums.Especie;
 import br.com.academiadev.BatataComBaconSpring.enums.Objetivo;
 import br.com.academiadev.BatataComBaconSpring.enums.Porte;
 import br.com.academiadev.BatataComBaconSpring.enums.Sexo;
-import br.com.academiadev.BatataComBaconSpring.enums.Especie;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -36,9 +39,12 @@ public class Pet extends AuditEntity<Long> {
 	private String nome;
 
 	@NotNull
+	private String descricao;
+
+	@NotNull
 	@Enumerated(EnumType.STRING)
 	private Sexo sexo;
-	
+
 	@NotNull
 	@Enumerated(EnumType.STRING)
 	private Porte porte;
@@ -51,10 +57,14 @@ public class Pet extends AuditEntity<Long> {
 	@Enumerated(EnumType.STRING)
 	private Objetivo objetivo;
 
-	@NotBlank
-	private String localPet;
-	
 	@NotNull
-	@ManyToOne
-	private User usuario;
+	@OneToOne( //
+			cascade = CascadeType.ALL)
+	private Localizacao localPet;
+
+	// Um List para armazenar os IDs das fotos
+	private ArrayList<Long> fotos;
+
+	@ManyToOne(optional = false)
+	private Usuario usuario;
 }

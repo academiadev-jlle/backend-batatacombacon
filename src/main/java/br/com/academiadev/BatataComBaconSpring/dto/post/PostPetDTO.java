@@ -1,5 +1,7 @@
 package br.com.academiadev.BatataComBaconSpring.dto.post;
 
+import java.util.ArrayList;
+
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.validation.constraints.NotBlank;
@@ -11,6 +13,7 @@ import br.com.academiadev.BatataComBaconSpring.enums.Especie;
 import br.com.academiadev.BatataComBaconSpring.enums.Objetivo;
 import br.com.academiadev.BatataComBaconSpring.enums.Porte;
 import br.com.academiadev.BatataComBaconSpring.enums.Sexo;
+import br.com.academiadev.BatataComBaconSpring.model.Localizacao;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -23,6 +26,10 @@ public class PostPetDTO {
 	@Size(min = 3, max = 30)
 	@ApiModelProperty(example = "Rex", name = "Nome do Pet")
 	private String nome;
+	
+	@NotNull
+	@ApiModelProperty(example = "Oi, eu sou o seu Pet <3", name = "Resumo ou Descrição")
+	private String descricao;
 	
 	@NotNull
 	@ApiModelProperty(example = "MACHO", name = "Sexo do pet")
@@ -43,9 +50,12 @@ public class PostPetDTO {
 	@ApiModelProperty(example = "DOACAO", name = "Objetivo do cadastro deste Pet")
 	private Objetivo objetivo;
 	
-	@NotBlank
-	@ApiModelProperty(example = "Morro da vó Salvelina", name = "Local onde o Pet foi encontrado / perdido / acolhido")
-	private String localPet;
+	@ApiModelProperty(name = "Local onde o Pet foi encontrado / perdido / acolhido")
+	@NotNull
+	private Localizacao localPet;
+	
+	@ApiModelProperty(example = "[]", name = "IDs das imagens do Pet" )
+	private ArrayList<Long> fotos;
 	
 	@NotNull
 	@ApiModelProperty(example = "1", name = "Identificador do Usuário Criador")
